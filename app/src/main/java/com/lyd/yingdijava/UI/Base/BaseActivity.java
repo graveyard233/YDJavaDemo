@@ -1,4 +1,4 @@
-package com.lyd.yingdijava.Base;
+package com.lyd.yingdijava.UI.Base;
 
 import android.os.Bundle;
 

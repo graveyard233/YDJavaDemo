@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/community.xml" value="0.205" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/community_27.xml" value="0.205" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.205" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/news.xml" value="0.205" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/news_27.xml" value="0.205" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/sort.xml" value="0.188" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/drawable/sort_25.xml" value="0.188" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/layout/fragment_community.xml" value="0.276268115942029" />
+        <entry key="..\:/ForAndroid/YDJavaDemo/app/src/main/res/menu/flow_menu.xml" value="0.2015625" />
         <entry key="..\:/For_Android/YingDiJava/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4205" />
         <entry key="..\:/For_Android/YingDiJava/app/src/main/res/drawable/navigation_change.xml" value="0.4205" />
         <entry key="..\:/For_Android/YingDiJava/app/src/main/res/layout/activity_main.xml" value="0.24486301369863014" />
