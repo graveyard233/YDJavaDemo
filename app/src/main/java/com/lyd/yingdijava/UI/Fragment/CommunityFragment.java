@@ -1,12 +1,14 @@
 package com.lyd.yingdijava.UI.Fragment;
 
-import com.lyd.yingdijava.Base.BaseFragment;
+import android.util.Log;
+
+import com.lyd.yingdijava.UI.Base.BaseFragment;
 import com.lyd.yingdijava.R;
 
 public class CommunityFragment extends BaseFragment {
     @Override
     protected void initViews() {
-
+        Log.i("TAG", "CommunityFragment: " + getDataTag());
     }
 
     @Override

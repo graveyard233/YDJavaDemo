@@ -4,22 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:background="@color/深竹月_浅色"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
     <com.youth.banner.Banner
         android:id="@+id/news_banner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_recyclerView"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"/>
+        android:layout_weight="4">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
 </LinearLayout>
