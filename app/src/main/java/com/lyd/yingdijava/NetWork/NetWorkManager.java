@@ -50,7 +50,10 @@ public class NetWorkManager {
                         @Override
                         public void log(@NonNull String s) {
                             try {
+
+                                s = s.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
                                 Log.e(TAG, URLDecoder.decode(s,"utf-8"));
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Log.e(TAG, "catch log: " + s );
