@@ -2,29 +2,36 @@ package com.lyd.yingdijava.Repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.lyd.yingdijava.Entity.News.NewsNode;
+import com.lyd.yingdijava.Info.UrlInfo;
 import com.lyd.yingdijava.NetWork.NetWorkManager;
 import com.lyd.yingdijava.Repository.InterFace.IMessage;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
 
+import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MessageRepository {
     private static final String TAG = "MessageRepository";
 
     private static MessageRepository instance;
 
-    private MessageRepository(){ }
+    private OkHttpClient okHttpClient;
+
+    private MessageRepository(){ okHttpClient = new OkHttpClient(); }
 
     public static MessageRepository getInstance(){
         if (instance == null){
@@ -37,7 +44,37 @@ public class MessageRepository {
     }
 
     public void getNewsList(String tagName,SimpleListCallBack<NewsNode> callBack){
-        
+        String url = UrlInfo.getInstance().getUrlByKey(tagName);
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Mobile Safari/537.36")
+                .addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+                .addHeader("Accept-Language","zh-CN,zh;q=0.9")
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callBack.onError("error: " + e.getMessage());
+            }
 
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.code() == 200){
+                    if (response.body() != null){
+                        String tempHTML;
+                        try {
+                            tempHTML = response.body().string();
+                        } catch (Exception e){
+                            callBack.onError("error: " + e.getMessage());
+                            return;
+                        }
+
+                        //在这里处理，解析html获取官方推流列表
+                        callBack.onError("success: " +tempHTML);
+                    }
+                }
+            }
+        });
     }
 }

@@ -31,7 +31,7 @@ public class MessageHomeFragment extends BaseFragment {
         viewPager = find(R.id.home_viewPager);
 
         initChildrenFragment();
-
+        viewPager.setUserInputEnabled(false);
         viewPager.setAdapter(new FragmentStateAdapter(getParentFragmentManager(),getLifecycle()) {
             @NonNull
             @Override
@@ -45,11 +45,15 @@ public class MessageHomeFragment extends BaseFragment {
             }
         });
 
-        viewPager.setUserInputEnabled(false);
+
     }
 
-    public void changeFragment(){
-        viewPager.setCurrentItem(viewPager.getCurrentItem() == 0 ? 1 : 0);
+    public void chooseNews(){
+        viewPager.setCurrentItem(0);
+    }
+
+    public void chooseCommunity(){
+        viewPager.setCurrentItem(1);
     }
 
     public int getCurrentFragment(){

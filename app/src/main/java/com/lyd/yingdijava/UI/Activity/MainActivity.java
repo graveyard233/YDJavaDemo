@@ -48,7 +48,15 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MessageHomeFragment fragment = (MessageHomeFragment) fragments.get(viewPager.getCurrentItem());
-        fragment.changeFragment();
+        switch (item.getItemId()){
+            case R.id.action_News:
+                fragment.chooseNews();
+                break;
+            case R.id.action_Community:
+                fragment.chooseCommunity();
+                break;
+            default:break;
+        }
         return true;
     }
 

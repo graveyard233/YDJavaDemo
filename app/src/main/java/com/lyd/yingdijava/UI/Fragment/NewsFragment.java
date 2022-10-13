@@ -10,10 +10,12 @@ import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.ViewModel.MessageViewModel;
 
 public class NewsFragment extends BaseFragment{
-    private final String TAG = "NewsFragment-" + getDataTag();
+    private final String TAG = "NewsFragment";
 
     private MessageViewModel messageViewModel;
 
+
+    // todo 处理refresh滑动冲突，需要重写事件分发
     @Override
     protected void initViews() {
         Log.i("TAG", "NewsFragment: " + getDataTag());
@@ -30,7 +32,7 @@ public class NewsFragment extends BaseFragment{
     }
 
     private void getList(){
-        messageViewModel.getNewsListFromModel("111");
+        messageViewModel.getNewsListFromModel(getDataTag() + "mob");
     }
 
     private void observeLiveData(){
