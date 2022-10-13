@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.lyd.yingdijava.UI.Base.BaseActivity;
 import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.UI.Fragment.MessageHomeFragment;
+import com.lyd.yingdijava.UI.Widget.HorizontalInterceptionViewPager;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
     private static final String TAG = "MainActivity";
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private static final String[] titles = new String[] {"炉石","玩家杂谈"};
-    private ViewPager viewPager;
+    private HorizontalInterceptionViewPager viewPager;
     private SlidingTabLayout tabLayout;
 
     private BottomNavigationView bottomNavigation;

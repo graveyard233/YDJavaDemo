@@ -24,7 +24,7 @@
         app:tl_textBold="BOTH"
         />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.lyd.yingdijava.UI.Widget.HorizontalInterceptionViewPager
         android:id="@+id/main_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
