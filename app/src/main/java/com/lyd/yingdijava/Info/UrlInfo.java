@@ -13,6 +13,7 @@ public class UrlInfo {
             map.put("炉石","https://iyingdi.com/tz/tag/17");
             map.put("炉石mob","https://mob.iyingdi.com/fine/17");
             map.put("玩家杂谈","https://iyingdi.com/tz/tag/23");
+            map.put("玩家杂谈mob","https://mob.iyingdi.com/fine/23");
         }
     }
 

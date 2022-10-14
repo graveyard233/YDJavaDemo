@@ -10,7 +10,13 @@ import com.lyd.yingdijava.NetWork.NetWorkManager;
 import com.lyd.yingdijava.Repository.InterFace.IMessage;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observer;
@@ -71,7 +77,29 @@ public class MessageRepository {
                         }
 
                         //在这里处理，解析html获取官方推流列表
-                        callBack.onError("success: " +tempHTML);
+//                        callBack.onError("success: " +tempHTML);
+                        Document doc = Jsoup.parse(tempHTML);
+                        try {
+                            Elements postList = doc.select("section.fine-list").first()
+                                    .select("div.post-item");
+                            Log.i(TAG, "onResponse: " + postList.size());
+                            List<NewsNode> tempNewsList = new ArrayList<>();
+                            if (postList.size() > 0){
+                                for (Element item:
+                                     postList) {
+                                    tempNewsList.add(new NewsNode(
+                                            item.getElementsByTag("a").first().attr("href"),
+                                            item.select("div.title").first().text(),
+                                            item.select("div.photo").first().attr("style"),
+                                            null
+                                    ));
+//                                    callBack.onError(item.select("div.title").first().text());
+                                }
+                                callBack.onSuccess(tempNewsList);
+                            }
+                        } catch (Exception e){
+                            callBack.onError(e.getMessage());
+                        }
                     }
                 }
             }

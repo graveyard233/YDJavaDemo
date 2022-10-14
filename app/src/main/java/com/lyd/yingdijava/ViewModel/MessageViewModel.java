@@ -10,6 +10,7 @@ import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Repository.MessageRepository;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MessageViewModel extends ViewModel {
@@ -28,12 +29,11 @@ public class MessageViewModel extends ViewModel {
         MessageRepository.getInstance().getNewsList(tagName,new SimpleListCallBack<NewsNode>() {
             @Override
             public void onSuccess(List<NewsNode> list) {
-
+                newsList.postValue(list);
             }
 
             @Override
             public void onError(String msg) {
-                Log.i("TAG", "onError: " + msg);
                 errorMessage.postValue(msg);
             }
         });
