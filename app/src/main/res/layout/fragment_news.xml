@@ -11,6 +11,7 @@
         android:layout_weight="1"/>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/news_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4">
@@ -19,16 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/news_recyclerView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="4"/>-->
-
-        <TextView
-            android:id="@+id/text_test"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

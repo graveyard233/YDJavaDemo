@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.lyd.yingdijava"
@@ -57,8 +57,14 @@ dependencies {
     implementation 'org.apache.commons:commons-text:1.9' // 解析原生代码
     implementation 'org.jsoup:jsoup:1.15.2' //解析html代码
 
-    implementation 'io.github.youth5201314:banner:2.2.2'
+    implementation 'io.github.youth5201314:banner:2.2.2' //banner
 
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
     implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
+
+    implementation 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04'
+    //尝试使用新版本的recycleAdapter
+    implementation 'com.github.bumptech.glide:glide:4.14.2'           //图片加载框架
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
 }

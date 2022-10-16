@@ -14,6 +14,8 @@ public class UrlInfo {
             map.put("炉石mob","https://mob.iyingdi.com/fine/17");
             map.put("玩家杂谈","https://iyingdi.com/tz/tag/23");
             map.put("玩家杂谈mob","https://mob.iyingdi.com/fine/23");
+            map.put("万智牌","https://iyingdi.com/tz/tag/18");
+            map.put("万智牌mob","https://mob.iyingdi.com/fine/18");
         }
     }
 

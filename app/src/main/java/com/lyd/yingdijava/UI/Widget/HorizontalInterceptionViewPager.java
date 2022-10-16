@@ -2,11 +2,15 @@ package com.lyd.yingdijava.UI.Widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
+
+import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 
 public class HorizontalInterceptionViewPager extends ViewPager {
 
@@ -32,10 +36,12 @@ public class HorizontalInterceptionViewPager extends ViewPager {
             case MotionEvent.ACTION_DOWN: {
                 mLastX = (int) ev.getX();
                 mLastY = (int) ev.getY();
-
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
+                if (mLastY < getHeight() / 5  ){//如果落点是在banner里面就不用拦截
+                    break;
+                }
                 int deltaX = x - mLastX;
                 int deltaY = y - mLastY;
                 if (Math.abs(deltaX) > Math.abs(deltaY)) {//水平滑动，拦截

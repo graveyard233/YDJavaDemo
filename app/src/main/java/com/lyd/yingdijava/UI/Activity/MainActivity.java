@@ -20,7 +20,7 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
     private static final String TAG = "MainActivity";
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private static final String[] titles = new String[] {"炉石","玩家杂谈"};
+    private static final String[] titles = new String[] {"炉石","万智牌","玩家杂谈"};
     private HorizontalInterceptionViewPager viewPager;
     private SlidingTabLayout tabLayout;
 
@@ -32,8 +32,9 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         viewPager = findViewById(R.id.main_viewPager);
         tabLayout = findViewById(R.id.main_tabLayout);
 
-        fragments.add(new MessageHomeFragment());
-        fragments.add(new MessageHomeFragment());
+        for (int i = 0; i < titles.length; i++) {
+            fragments.add(new MessageHomeFragment());
+        }
 
         for (int i = 0; i < fragments.size(); i++) {
             //告诉每个fragment分别是什么区块
