@@ -1,7 +1,5 @@
 package com.lyd.yingdijava.ViewModel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,7 +9,6 @@ import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Repository.MessageRepository;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MessageViewModel extends ViewModel {
@@ -21,12 +18,15 @@ public class MessageViewModel extends ViewModel {
 
     private MutableLiveData<List<NewsNode>> newsList;
 
-    private MutableLiveData<String> errorMessage;
+    private MutableLiveData<String> newsError;
+
+    private MutableLiveData<String> bannerError;
 
     public MessageViewModel(){
         newsList = new MutableLiveData<>();
-        errorMessage = new MutableLiveData<>();
+        newsError = new MutableLiveData<>();
         bannerList = new MutableLiveData<>();
+        bannerError = new MutableLiveData<>();
     }
 
     public void getNewsListFromModel(String tagName){
@@ -38,7 +38,7 @@ public class MessageViewModel extends ViewModel {
 
             @Override
             public void onError(String msg) {
-                errorMessage.postValue(msg);
+                newsError.postValue(msg);
             }
         });
     }
@@ -52,13 +52,13 @@ public class MessageViewModel extends ViewModel {
 
             @Override
             public void onError(String msg) {
-                errorMessage.postValue(msg);
+                bannerError.postValue(msg);
             }
         });
     }
 
-    public LiveData<String> getErrorLiveData(){
-        return errorMessage;
+    public LiveData<String> getNewsErrorLiveData(){
+        return newsError;
     }
 
     public LiveData<List<NewsNode>> getNewsList() {
@@ -67,5 +67,9 @@ public class MessageViewModel extends ViewModel {
 
     public LiveData<List<BannerNode>> getBannerList(){
         return bannerList;
+    }
+
+    public LiveData<String> getBannerErrorLiveData(){
+        return bannerError;
     }
 }

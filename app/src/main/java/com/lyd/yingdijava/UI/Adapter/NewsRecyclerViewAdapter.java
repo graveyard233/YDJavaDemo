@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.QuickAdapterHelper;
-import com.chad.library.adapter.base.viewholder.QuickViewHolder;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.R;
 

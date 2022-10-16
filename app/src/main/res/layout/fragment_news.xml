@@ -4,27 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.youth.banner.Banner
-        android:id="@+id/news_banner"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/news_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4">
+        android:layout_height="match_parent"
+        >
 
         <com.scwang.smart.refresh.header.ClassicsHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/news_recyclerView"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/news_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/news_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

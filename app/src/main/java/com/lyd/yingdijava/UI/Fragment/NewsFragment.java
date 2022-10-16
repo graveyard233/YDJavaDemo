@@ -2,7 +2,6 @@ package com.lyd.yingdijava.UI.Fragment;
 
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
@@ -21,11 +20,12 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
-import com.youth.banner.indicator.BaseIndicator;
+import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.CircleIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class NewsFragment extends BaseFragment{
     private final String TAG = "NewsFragment";
@@ -83,7 +83,7 @@ public class NewsFragment extends BaseFragment{
                 refreshLayout.finishRefresh(true);
             }
         });
-        messageViewModel.getErrorLiveData().observe(NewsFragment.this, new Observer<String>() {
+        messageViewModel.getNewsErrorLiveData().observe(NewsFragment.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 NewsRecyclerViewAdapter adapter = new NewsRecyclerViewAdapter();
@@ -110,6 +110,20 @@ public class NewsFragment extends BaseFragment{
                         .addBannerLifecycleObserver(getViewLifecycleOwner())
                         .setIndicator(new CircleIndicator(getContext()))
                         .setLoopTime(10000);
+            }
+        });
+        messageViewModel.getBannerErrorLiveData().observe(NewsFragment.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                List<String> errorList = new ArrayList<>();
+                errorList.add(s);
+                banner.setAdapter(new BannerImageAdapter<String>(errorList){
+                    @Override
+                    public void onBindView(BannerImageHolder holder, String data, int position, int size) {
+                        holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                        holder.imageView.setImageResource(R.drawable.img_load_error);
+                    }
+                });
             }
         });
     }
