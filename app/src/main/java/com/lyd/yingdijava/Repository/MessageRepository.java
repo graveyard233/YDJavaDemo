@@ -149,6 +149,7 @@ public class MessageRepository {
 
                         if (stringBuffer.toString().length() < 20){
                             Log.i(TAG, "onResponse: empty");
+                            callBack.onError("empty");
                             return;
                         }
 

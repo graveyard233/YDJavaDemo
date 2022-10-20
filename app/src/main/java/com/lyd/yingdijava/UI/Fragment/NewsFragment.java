@@ -1,6 +1,7 @@
 package com.lyd.yingdijava.UI.Fragment;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.UI.Adapter.NewsBannerAdapter;
@@ -77,6 +80,12 @@ public class NewsFragment extends BaseFragment{
             @Override
             public void onChanged(List<NewsNode> newsNodes) {
                 NewsRecyclerViewAdapter adapter = new NewsRecyclerViewAdapter(newsNodes);
+                adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<NewsNode>() {
+                    @Override
+                    public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
+                        ToastUtils.getDefaultMaker().show(newsNodes.get(i).getTitle());
+                    }
+                });
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
@@ -120,8 +129,11 @@ public class NewsFragment extends BaseFragment{
                 banner.setAdapter(new BannerImageAdapter<String>(errorList){
                     @Override
                     public void onBindView(BannerImageHolder holder, String data, int position, int size) {
-                        holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        holder.imageView.setImageResource(R.drawable.img_load_error);
+                        holder.imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                        if (data.equals("empty"))
+                            holder.imageView.setImageResource(R.drawable.img_is_empty);
+                        else
+                            holder.imageView.setImageResource(R.drawable.img_load_error);
                     }
                 });
             }
