@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.Banner.BannerRoot;
+import com.lyd.yingdijava.Entity.Community.BaseCommunityNode;
+import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Entity.News.NewsNodeFoot;
 import com.lyd.yingdijava.Info.UrlInfo;
-import com.lyd.yingdijava.NetWork.NetWorkManager;
-import com.lyd.yingdijava.Repository.InterFace.IMessage;
 import com.lyd.yingdijava.Utils.TextUtils;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
 
@@ -24,11 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -173,6 +168,72 @@ public class MessageRepository {
                         Gson gson = new Gson();
                         BannerRoot root = gson.fromJson(stringBuffer.toString(),BannerRoot.class);
                         callBack.onSuccess(root.getTop_content());
+                    }
+                }
+            }
+        });
+    }
+
+    public void getCommunityPostList(String tagName, SimpleListCallBack<CommunityPostNode> callBack){
+        String url = UrlInfo.getInstance().getUrlByKey(tagName) + "?page=post";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callBack.onError("error");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.code() == 200){
+                    if (response.body() != null){
+                        String tempPostList;
+                        try {
+                            tempPostList = response.body().string();
+                        } catch (IOException e) {
+                            callBack.onError("error");
+                            return;
+                        }
+                        Document doc = Jsoup.parse(tempPostList);
+//                        Element script = doc.select("script").get(5);
+                        Elements postList_html = doc.select("div.post-list-component").first().children();
+
+                        List<CommunityPostNode> nodeList = new ArrayList<>();
+                        for (Element e :
+                                postList_html) {
+                            CommunityPostNode node = new CommunityPostNode();
+                            if (e.firstElementChild().tagName().equals("a")){
+//                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
+                                node.setPostType(BaseCommunityNode.PostType.ArticlePost);
+                            } else if (e.select("div.mt-10").size() == 0){
+                                node.setPostType(BaseCommunityNode.PostType.RoutinePost);
+//                                if (e.select("ul.imgs-area").size() > 0){
+//                                    Log.i(TAG, "是常规帖子,带图片: " + e.select("div.title").text());
+//                                } else{
+//                                    Log.i(TAG, "是常规帖子,没有图片: " + e.select("div.title").text());
+//                                }
+                            } else if (e.select("div.deck-item").size() > 0){
+                                node.setPostType(BaseCommunityNode.PostType.DeskPost);
+//                                Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
+                            } else if (e.select("div.vote-result").size() > 0){
+                                node.setPostType(BaseCommunityNode.PostType.VotePost);
+//                                Log.e(TAG, "是投票: " + e.select("div.title").text());
+                            }
+                            node.setTitle(e.select("div.title").text());
+                            nodeList.add(node);
+//                            else if (e.select("div.vote-result").size() > 0){
+//                                Log.e(TAG, "是投票: " + e.select("div.title").text());
+//                            } else {
+//                                Log.i(TAG, "是其他类型: " + e.select("div.title").text());
+//                            }
+
+                        }
+                        callBack.onSuccess(nodeList);
+//                        StringBuffer stringBuffer = new StringBuffer(script.toString());
+//                        Log.i(TAG, "communityPostList: " + stringBuffer.toString());
                     }
                 }
             }

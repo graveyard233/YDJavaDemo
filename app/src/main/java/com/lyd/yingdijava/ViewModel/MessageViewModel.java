@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.lyd.yingdijava.Entity.Banner.BannerNode;
+import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Repository.MessageRepository;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
@@ -22,11 +23,17 @@ public class MessageViewModel extends ViewModel {
 
     private MutableLiveData<String> bannerError;
 
+    private MutableLiveData<List<CommunityPostNode>> communityPostList;
+
+    private MutableLiveData<String> communityPostError;
+
     public MessageViewModel(){
         newsList = new MutableLiveData<>();
         newsError = new MutableLiveData<>();
         bannerList = new MutableLiveData<>();
         bannerError = new MutableLiveData<>();
+        communityPostList = new MutableLiveData<>();
+        communityPostError = new MutableLiveData<>();
     }
 
     public void getNewsListFromModel(String tagName){
@@ -57,6 +64,21 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
+    public void getCommunityPostListByHotFromModel(String tagName){
+        MessageRepository.getInstance().getCommunityPostList(tagName, new SimpleListCallBack<CommunityPostNode>(){
+
+            @Override
+            public void onSuccess(List<CommunityPostNode> list) {
+                communityPostList.postValue(list);
+            }
+
+            @Override
+            public void onError(String msg) {
+                communityPostError.postValue(msg);
+            }
+        });
+    }
+
     public LiveData<String> getNewsErrorLiveData(){
         return newsError;
     }
@@ -71,5 +93,13 @@ public class MessageViewModel extends ViewModel {
 
     public LiveData<String> getBannerErrorLiveData(){
         return bannerError;
+    }
+
+    public LiveData<List<CommunityPostNode>> getCommunityPostList(){
+        return communityPostList;
+    }
+
+    public LiveData<String> getCommunityPostErrorLiveData(){
+        return communityPostError;
     }
 }
