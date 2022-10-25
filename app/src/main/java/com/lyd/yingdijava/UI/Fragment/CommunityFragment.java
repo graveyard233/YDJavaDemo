@@ -5,10 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
+import com.lyd.yingdijava.UI.Adapter.CommunityMultiItemAdapter;
 import com.lyd.yingdijava.UI.Base.BaseFragment;
 import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.ViewModel.MessageViewModel;
@@ -37,6 +39,7 @@ public class CommunityFragment extends BaseFragment {
         initViewModel();
         observeLiveData();
 
+        recyclerView = find(R.id.community_recyclerView);
         refreshLayout = find(R.id.community_refresh_layout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -63,6 +66,11 @@ public class CommunityFragment extends BaseFragment {
                         communityPostNodes) {
                     Log.i(TAG, "Type: " + node.getPostType().toString() + ",Title: " + node.getTitle());
                 }
+                CommunityMultiItemAdapter adapter = new CommunityMultiItemAdapter(communityPostNodes);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+                refreshLayout.finishRefresh(true);
             }
         });
         messageViewModel.getCommunityPostErrorLiveData().observe(CommunityFragment.this, new Observer<String>() {
