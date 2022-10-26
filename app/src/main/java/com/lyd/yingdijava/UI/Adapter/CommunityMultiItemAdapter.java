@@ -81,7 +81,6 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                     default:
                         return ROUTINE;
                 }
-//                return 0;
             }
         });
     }
