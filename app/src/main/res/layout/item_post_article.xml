@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/item_post_article_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/item_post_article_title"
+
+        android:layout_gravity="bottom"
+        android:textSize="12sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_post_article"
+        android:paddingLeft="3dp"
+        android:paddingBottom="2dp"
+        tools:text="社区文章"
+        android:includeFontPadding="false"/>
+
+
+</com.google.android.material.card.MaterialCardView>

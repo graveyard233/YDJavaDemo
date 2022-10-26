@@ -208,8 +208,19 @@ public class MessageRepository {
                             if (e.firstElementChild().tagName().equals("a")){
 //                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
                                 node.setPostType(BaseCommunityNode.PostType.ArticlePost);
+                                node.setTitleImgUrl(e.select("img.cover").first().attr("src"));
                             } else if (e.select("div.mt-10").size() == 0){
                                 node.setPostType(BaseCommunityNode.PostType.RoutinePost);
+                                node.setText_preView(e.select("div.desc").first().text());
+                                List<String> tempImgList = new ArrayList<>();
+                                if (e.select("ul.imgs-area").size() > 0){
+                                    for (Element div :
+                                            e.select("div.img-item")) {
+                                        tempImgList.add(TextUtils.getImageUrlFromStyle(div.attr("style")));
+                                    }
+                                    node.setPostImgList(tempImgList);
+                                }
+
 //                                if (e.select("ul.imgs-area").size() > 0){
 //                                    Log.i(TAG, "是常规帖子,带图片: " + e.select("div.title").text());
 //                                } else{

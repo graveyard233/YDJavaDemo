@@ -18,5 +18,7 @@
     <color name="鹦鹉绿">#008e59</color>
     <color name="龙胆紫">#423171</color>
     <color name="透明色">#00000000</color>
-    <color name="半透明黑">#4D000000</color>
+    <color name="半透明黑_30">#4D000000</color>
+    <color name="半透明黑_50">#80000000</color>
+    <color name="半透明黑_40">#66000000</color>
 </resources>
