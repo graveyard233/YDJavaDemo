@@ -2,6 +2,7 @@ package com.lyd.yingdijava.UI.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +41,16 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
             public void onBind(@NonNull RoutineVH routineVH, int i, @Nullable CommunityPostNode communityPostNode) {
                 routineVH.title.setText(communityPostNode.getTitle());
                 routineVH.textPreview.setText(communityPostNode.getText_preView());
-                try {
-                    Glide.with(getContext())
-                            .load(communityPostNode.getPostImgList().get(0))
-                            .placeholder(R.drawable.img_loading)
-                            .error(R.drawable.img_load_error)
-                            .into(routineVH.img);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (communityPostNode.getPostImgList() != null){
+                    try {
+                        Glide.with(getContext())
+                                .load(communityPostNode.getPostImgList().get(0))
+                                .placeholder(R.drawable.img_loading)
+                                .error(R.drawable.img_load_error)
+                                .into(routineVH.img);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }

@@ -7,7 +7,7 @@ public class TextUtils {
     public static String getImageUrlFromStyle(String style){
         StringBuffer sb = new StringBuffer(style);
         sb.delete(0,sb.indexOf("http"));
-        sb.delete(sb.length() - 3,sb.length());
+        sb.delete(sb.length() - 2,sb.length());
         return sb.toString();
     }
 

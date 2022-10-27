@@ -32,7 +32,10 @@ public class CommunityPostNode extends BaseCommunityNode{
     }
 
     public List<String> getPostImgList() {
-        return postImgList;
+        if (postImgList != null)
+            return postImgList;
+        else
+            return null;
     }
 
     public String getDeskInfo() {
