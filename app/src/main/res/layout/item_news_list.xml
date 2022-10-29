@@ -56,7 +56,7 @@
         app:layout_constraintWidth_percent="0.44"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.78"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/guideline_70h"
         app:layout_constraintEnd_toStartOf="@+id/guideline_45"
         app:layout_constraintStart_toStartOf="@+id/guideline_5"

@@ -174,8 +174,8 @@ public class MessageRepository {
         });
     }
 
-    public void getCommunityPostList(String tagName, SimpleListCallBack<CommunityPostNode> callBack){
-        String url = UrlInfo.getInstance().getUrlByKey(tagName) + "?page=post";
+    public void getCommunityPostList(String tagName,String order, SimpleListCallBack<CommunityPostNode> callBack){
+        String url = UrlInfo.getInstance().getUrlByKey(tagName) + order;
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -204,48 +204,42 @@ public class MessageRepository {
                         List<CommunityPostNode> nodeList = new ArrayList<>();
                         for (Element e :
                                 postList_html) {
-                            CommunityPostNode node = new CommunityPostNode();
-                            if (e.firstElementChild().tagName().equals("a")){
-//                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
-                                node.setPostType(BaseCommunityNode.PostType.ArticlePost);
-                                node.setTitleImgUrl(e.select("img.cover").first().attr("src"));
-                            } else if (e.select("div.mt-10").size() == 0){
-                                node.setPostType(BaseCommunityNode.PostType.RoutinePost);
-                                node.setText_preView(e.select("div.desc").first().text());
-                                List<String> tempImgList = new ArrayList<>();
-                                if (e.select("ul.imgs-area").size() > 0){
-                                    for (Element div :
-                                            e.select("div.img-item")) {
-                                        tempImgList.add(TextUtils.getImageUrlFromStyle(div.attr("style")));
-                                    }
-                                    node.setPostImgList(tempImgList);
-                                }
-
-//                                if (e.select("ul.imgs-area").size() > 0){
-//                                    Log.i(TAG, "是常规帖子,带图片: " + e.select("div.title").text());
-//                                } else{
+                            try {
+                                CommunityPostNode node = new CommunityPostNode();
+                                if (e.firstElementChild().tagName().equals("a")){
+    //                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
+                                    node.setPostType(BaseCommunityNode.PostType.ArticlePost);
+                                    node.setTitleImgUrl(e.select("img.cover").first().attr("src"));
+                                } else if (e.select("div.mt-10").size() == 0){
 //                                    Log.i(TAG, "是常规帖子,没有图片: " + e.select("div.title").text());
-//                                }
-                            } else if (e.select("div.deck-item").size() > 0){
-                                node.setPostType(BaseCommunityNode.PostType.DeskPost);
-//                                Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
-                            } else if (e.select("div.vote-result").size() > 0){
-                                node.setPostType(BaseCommunityNode.PostType.VotePost);
-//                                Log.e(TAG, "是投票: " + e.select("div.title").text());
+                                    node.setPostType(BaseCommunityNode.PostType.RoutinePost);
+                                    node.setText_preView(e.select("div.desc").first().text());
+                                    List<String> tempImgList = new ArrayList<>();
+                                    if (e.select("ul.imgs-area").size() > 0){
+                                        for (Element div :
+                                                e.select("div.img-item")) {
+                                            tempImgList.add(TextUtils.getImageUrlFromStyle(div.attr("style")));
+                                        }
+                                        node.setPostImgList(tempImgList);
+                                    }
+                                } else if (e.select("div.deck-item").size() > 0){
+                                    node.setPostType(BaseCommunityNode.PostType.DeskPost);
+    //                                Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
+                                } else if (e.select("div.vote-result").size() > 0){
+                                    node.setPostType(BaseCommunityNode.PostType.VotePost);
+    //                                Log.e(TAG, "是投票: " + e.select("div.title").text());
+                                }
+                                node.setTitle(e.select("div.title").text());
+                                nodeList.add(node);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
-                            node.setTitle(e.select("div.title").text());
-                            nodeList.add(node);
-//                            else if (e.select("div.vote-result").size() > 0){
-//                                Log.e(TAG, "是投票: " + e.select("div.title").text());
-//                            } else {
-//                                Log.i(TAG, "是其他类型: " + e.select("div.title").text());
-//                            }
 
                         }
                         callBack.onSuccess(nodeList);
-//                        StringBuffer stringBuffer = new StringBuffer(script.toString());
-//                        Log.i(TAG, "communityPostList: " + stringBuffer.toString());
                     }
+                } else {
+                    callBack.onError("error");
                 }
             }
         });

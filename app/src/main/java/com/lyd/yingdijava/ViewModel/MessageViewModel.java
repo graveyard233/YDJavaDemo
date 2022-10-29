@@ -64,8 +64,8 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
-    public void getCommunityPostListByHotFromModel(String tagName){
-        MessageRepository.getInstance().getCommunityPostList(tagName, new SimpleListCallBack<CommunityPostNode>(){
+    public void getCommunityPostListFromModel(String tagName,String byWhat){
+        MessageRepository.getInstance().getCommunityPostList(tagName, byWhat, new SimpleListCallBack<CommunityPostNode>(){
 
             @Override
             public void onSuccess(List<CommunityPostNode> list) {

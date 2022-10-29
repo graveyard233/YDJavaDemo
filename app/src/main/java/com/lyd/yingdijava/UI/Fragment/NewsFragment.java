@@ -38,6 +38,8 @@ public class NewsFragment extends BaseFragment{
     private SmartRefreshLayout refreshLayout;
 
     private RecyclerView recyclerView;
+    private NewsRecyclerViewAdapter adapter;
+    private LinearLayoutManager linearLayoutManager;
 
     private Banner banner;
 
@@ -49,6 +51,8 @@ public class NewsFragment extends BaseFragment{
         initViewModel();
         observeLiveData();
 
+        initRecyclerView();
+        initBanner();
         refreshLayout = find(R.id.news_refresh_layout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -58,8 +62,6 @@ public class NewsFragment extends BaseFragment{
             }
         });
 
-        recyclerView = find(R.id.news_recyclerView);
-        banner = find(R.id.news_banner);
     }
 
     private void initViewModel() {
@@ -79,30 +81,14 @@ public class NewsFragment extends BaseFragment{
         messageViewModel.getNewsList().observe(NewsFragment.this, new Observer<List<NewsNode>>() {
             @Override
             public void onChanged(List<NewsNode> newsNodes) {
-                NewsRecyclerViewAdapter adapter = new NewsRecyclerViewAdapter(newsNodes);
-                adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<NewsNode>() {
-                    @Override
-                    public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
-                        ToastUtils.getDefaultMaker().show(newsNodes.get(i).getTitle());
-                    }
-                });
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
+                adapter.submitList(newsNodes);
                 refreshLayout.finishRefresh(true);
             }
         });
         messageViewModel.getNewsErrorLiveData().observe(NewsFragment.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                NewsRecyclerViewAdapter adapter = new NewsRecyclerViewAdapter();
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
-                recyclerView.setAdapter(adapter);
-                adapter.setEmptyViewEnable(true);
-                adapter.setEmptyViewLayout(NewsFragment.this.requireContext(),R.layout.layout_load_error);
+                adapter.submitList(new ArrayList<>());
                 refreshLayout.finishRefresh(false);
             }
         });
@@ -138,6 +124,29 @@ public class NewsFragment extends BaseFragment{
                 });
             }
         });
+    }
+
+    private void initRecyclerView() {
+        recyclerView = find(R.id.news_recyclerView);
+
+        adapter = new NewsRecyclerViewAdapter();
+        adapter.setEmptyViewEnable(true);
+        adapter.setEmptyViewLayout(NewsFragment.this.requireContext(),R.layout.layout_load_error);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<NewsNode>() {
+            @Override
+            public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
+                ToastUtils.getDefaultMaker().show(baseQuickAdapter.getItem(i).getTitle());
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initBanner(){
+        banner = find(R.id.news_banner);
+
     }
 
 

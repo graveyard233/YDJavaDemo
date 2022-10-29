@@ -42,15 +42,23 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                 routineVH.title.setText(communityPostNode.getTitle());
                 routineVH.textPreview.setText(communityPostNode.getText_preView());
                 if (communityPostNode.getPostImgList() != null){
-                    try {
-                        Glide.with(getContext())
+//                    if (tag != null && (int) tag != i){
+//                        //如果tag不是Null,并且同时tag不等于当前的position。
+//                        //说明当前的viewHolder是复用来的
+//                        Glide.with(getContext()).clear(routineVH.img);
+//                    }
+
+                    Glide.with(getContext())
                                 .load(communityPostNode.getPostImgList().get(0))
                                 .placeholder(R.drawable.img_loading)
                                 .error(R.drawable.img_load_error)
                                 .into(routineVH.img);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    //给ImageView设置唯一标记。
+                    routineVH.img.setTag(R.id.item_post_routine_img1,i);
+                } else {//没有url，这个帖子没有图片
+                    Glide.with(getContext()).clear(routineVH.img);
+                    routineVH.img.setImageDrawable(null);
+                    routineVH.img.setTag(R.id.item_post_routine_img1,i);
                 }
 
             }
@@ -64,8 +72,8 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
 
             @Override
             public void onBind(@NonNull ArticleVH articleVH, int i, @Nullable CommunityPostNode communityPostNode) {
+                communityPostNode = getItems().get(i);
                 articleVH.title.setText(communityPostNode.getTitle());
-//                articleVH.img.setBackgroundColor(Color.GREEN);
                 Glide.with(getContext())
                         .load(communityPostNode.getTitleImgUrl())
                         .placeholder(R.drawable.img_loading)
