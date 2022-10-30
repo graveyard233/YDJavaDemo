@@ -94,10 +94,10 @@ public class CommunityFragment extends BaseFragment {
         messageViewModel.getCommunityPostList().observe(CommunityFragment.this, new Observer<List<CommunityPostNode>>() {
             @Override
             public void onChanged(List<CommunityPostNode> communityPostNodes) {
-                for (CommunityPostNode node :
-                        communityPostNodes) {
-                    Log.i(TAG, "Type: " + node.getPostType().toString() + ",Title: " + node.getTitle());
-                }
+//                for (CommunityPostNode node :
+//                        communityPostNodes) {
+//                    Log.i(TAG, "Type: " + node.getPostType().toString() + ",Title: " + node.getTitle());
+//                }
                 adapter.submitList(communityPostNodes);
                 refreshLayout.finishRefresh(true);
             }

@@ -9,6 +9,7 @@ import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.Banner.BannerRoot;
 import com.lyd.yingdijava.Entity.Community.BaseCommunityNode;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
+import com.lyd.yingdijava.Entity.Deck.HsDeckInfo;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Entity.News.NewsNodeFoot;
 import com.lyd.yingdijava.Info.UrlInfo;
@@ -21,7 +22,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -33,11 +36,15 @@ import okhttp3.Response;
 public class MessageRepository {
     private static final String TAG = "MessageRepository";
 
+    private static final String mySign  = "LYDSIGN";
+
     private static MessageRepository instance;
 
     private OkHttpClient okHttpClient;
 
-    private MessageRepository(){ okHttpClient = new OkHttpClient(); }
+    private MessageRepository(){
+        okHttpClient = new OkHttpClient();
+    }
 
     public static MessageRepository getInstance(){
         if (instance == null){
@@ -82,7 +89,6 @@ public class MessageRepository {
                         try {
                             Elements postList = doc.select("section.fine-list").first()
                                     .select("div.post-item");
-                            Log.i(TAG, "onResponse: " + postList.size());
                             List<NewsNode> tempNewsList = new ArrayList<>();
                             if (postList.size() > 0){
                                 for (Element item:
@@ -198,7 +204,7 @@ public class MessageRepository {
                             return;
                         }
                         Document doc = Jsoup.parse(tempPostList);
-//                        Element script = doc.select("script").get(5);
+                        Element script = doc.select("script").get(5);
                         Elements postList_html = doc.select("div.post-list-component").first().children();
 
                         List<CommunityPostNode> nodeList = new ArrayList<>();
@@ -206,6 +212,7 @@ public class MessageRepository {
                                 postList_html) {
                             try {
                                 CommunityPostNode node = new CommunityPostNode();
+                                node.setTitle(e.select("div.title").text());
                                 if (e.firstElementChild().tagName().equals("a")){
     //                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
                                     node.setPostType(BaseCommunityNode.PostType.ArticlePost);
@@ -224,12 +231,37 @@ public class MessageRepository {
                                     }
                                 } else if (e.select("div.deck-item").size() > 0){
                                     node.setPostType(BaseCommunityNode.PostType.DeskPost);
-    //                                Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
+
+                                    //这里开始拿卡组的json字符串
+                                    StringBuffer sb = new StringBuffer(script.toString());
+                                    sb.delete(0,sb.indexOf("postsList"))
+                                            .delete(0,sb.indexOf(node.getTitle()))
+                                            .delete(0,sb.indexOf("deck_info_json"))//掐头
+                                            .delete(0,16)
+                                            .delete(sb.indexOf("\",url:"),sb.length());//去尾
+                                    String deckInfoJson = TextUtils.unicodeStr2String(sb.toString())
+                                            .replaceAll("\\\\\\\\\\\\",mySign)//将三个反斜杠替换成专属标记保护起来，这里用于保护一些string的字段
+                                            .replaceAll("\\\\","")//替换所有反斜杠，Java中四个反斜杠代表一个斜杠
+                                            .replaceAll(mySign,"\\\\\\\\\\\\");//再将标记转回三个反斜杠
+//                                      Log.i(TAG, "finalJson: " + finalJson);
+                                    Log.i(TAG, "deckInfoJson: " + deckInfoJson);
+                                    Gson mGson = new Gson();
+                                    //这里应该按照tag来区分究竟是什么类型的卡组
+                                    switch (tagName){
+                                        case "炉石":
+                                            HsDeckInfo deckInfo = mGson.fromJson(deckInfoJson,HsDeckInfo.class);
+                                            Log.i(TAG, "onResponse: " + deckInfo.getName());
+                                            break;
+                                        default:break;
+                                    }
+//                                          Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
+
+
                                 } else if (e.select("div.vote-result").size() > 0){
                                     node.setPostType(BaseCommunityNode.PostType.VotePost);
     //                                Log.e(TAG, "是投票: " + e.select("div.title").text());
                                 }
-                                node.setTitle(e.select("div.title").text());
+
                                 nodeList.add(node);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
