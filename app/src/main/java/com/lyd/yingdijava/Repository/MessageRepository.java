@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.Banner.BannerRoot;
 import com.lyd.yingdijava.Entity.Community.BaseCommunityNode;
+import com.lyd.yingdijava.Entity.Community.CommunityPostFoot;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Entity.News.NewsNodeFoot;
@@ -263,7 +264,20 @@ public class MessageRepository {
                                     node.setPostType(BaseCommunityNode.PostType.VotePost);
     //                                Log.e(TAG, "是投票: " + e.select("div.title").text());
                                 }
-
+                                //统一处理foot
+                                List<String> tagsList = new ArrayList<>();
+                                CommunityPostFoot foot = new CommunityPostFoot();
+                                for (Element tagElement :
+                                        e.selectFirst("div.tags").select("span")) {
+                                    tagsList.add(tagElement.text());
+                                }
+                                foot.setTagList(tagsList);
+                                if (e.selectFirst("div.info").getElementsByTag("span").size() >= 5){
+                                    foot.setLikeNum(e.selectFirst("div.info").getElementsByTag("span").get(0).text());
+                                    foot.setReplyNum(e.selectFirst("div.info").getElementsByTag("span").get(2).text());
+                                    foot.setTime(e.selectFirst("div.info").getElementsByTag("span").get(4).text());
+                                }
+                                node.setFoot(foot);
                                 nodeList.add(node);
                             } catch (Exception ex) {
                                 ex.printStackTrace();

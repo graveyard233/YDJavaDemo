@@ -1,7 +1,6 @@
 package com.lyd.yingdijava.UI.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                     routineVH.imgBar.removeAllViews();
                 }
                 //没有，则为第一次创建，需要初始化并注入
-                imgsView = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.routine_imgs_bar,null,false);
+                imgsView = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.bar_routine_imgs,null,false);
                 routineVH.imgBar.addView(imgsView);
 
                 if (communityPostNode.getPostImgList() != null && communityPostNode.getPostImgList().size() > 0){
@@ -83,7 +82,12 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                             .error(R.drawable.img_load_error)
                             .into(routineVH.userImg);
                 }
-
+                if (communityPostNode.getFoot() != null){
+                    routineVH.footTag.setText("#" + communityPostNode.getFoot().getTagList().get(0));
+                    routineVH.footLike.setText(communityPostNode.getFoot().getLikeNum());
+                    routineVH.footReply.setText(communityPostNode.getFoot().getReplyNum());
+                    routineVH.footTime.setText(communityPostNode.getFoot().getTime());
+                }
 
 
 
@@ -115,6 +119,12 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                     articleVH.root.getChildAt(0).setVisibility(View.VISIBLE);
                 }
                 articleVH.root.setLayoutParams(lp);
+                if (communityPostNode.getFoot() != null){
+                    articleVH.footTag.setText("#" + communityPostNode.getFoot().getTagList().get(0));
+                    articleVH.footLike.setText(communityPostNode.getFoot().getLikeNum());
+                    articleVH.footReply.setText(communityPostNode.getFoot().getReplyNum());
+                    articleVH.footTime.setText(communityPostNode.getFoot().getTime());
+                }
             }
         };
         OnMultiItemAdapterListener<CommunityPostNode,DeckHsVH> listenerDeckHs = new OnMultiItemAdapterListener<CommunityPostNode, DeckHsVH>() {
@@ -138,7 +148,12 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                             .error(R.drawable.img_load_error)
                             .into(deckHsVH.userImg);
                 }
-
+                if (communityPostNode.getFoot() != null){
+                    deckHsVH.footTag.setText("#" + communityPostNode.getFoot().getTagList().get(0));
+                    deckHsVH.footLike.setText(communityPostNode.getFoot().getLikeNum());
+                    deckHsVH.footReply.setText(communityPostNode.getFoot().getReplyNum());
+                    deckHsVH.footTime.setText(communityPostNode.getFoot().getTime());
+                }
                 if (communityPostNode.getDeckInfo() == null)
                     return;
                 switch (communityPostNode.getDeckTag()){
@@ -212,6 +227,10 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
         ImageView userImg;
         TextView userName;
         TextView userLevel;
+        TextView footTag;
+        TextView footLike;
+        TextView footReply;
+        TextView footTime;
         public RoutineVH(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_post_routine_title);
@@ -220,6 +239,10 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
             userImg = itemView.findViewById(R.id.user_img_portrait);
             userName = itemView.findViewById(R.id.user_text_name);
             userLevel = itemView.findViewById(R.id.user_text_level);
+            footTag = itemView.findViewById(R.id.bar_item_foot_tagName);
+            footLike = itemView.findViewById(R.id.bar_item_foot_likeNum);
+            footReply = itemView.findViewById(R.id.bar_item_foot_replyNum);
+            footTime = itemView.findViewById(R.id.bar_item_foot_time);
         }
     }
 
@@ -227,11 +250,19 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
         TextView title;
         ImageView img;
         LinearLayout root;
+        TextView footTag;
+        TextView footLike;
+        TextView footReply;
+        TextView footTime;
         public ArticleVH(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_post_article_title);
             img = itemView.findViewById(R.id.item_post_article_img);
             root = itemView.findViewById(R.id.item_post_Article_linear);
+            footTag = itemView.findViewById(R.id.bar_item_foot_tagName);
+            footLike = itemView.findViewById(R.id.bar_item_foot_likeNum);
+            footReply = itemView.findViewById(R.id.bar_item_foot_replyNum);
+            footTime = itemView.findViewById(R.id.bar_item_foot_time);
         }
     }
 
@@ -243,6 +274,10 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
         ImageView userImg;
         TextView userName;
         TextView userLevel;
+        TextView footTag;
+        TextView footLike;
+        TextView footReply;
+        TextView footTime;
         public DeckHsVH(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_post_deck_title);
@@ -252,6 +287,10 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
             userImg = itemView.findViewById(R.id.user_img_portrait);
             userName = itemView.findViewById(R.id.user_text_name);
             userLevel = itemView.findViewById(R.id.user_text_level);
+            footTag = itemView.findViewById(R.id.bar_item_foot_tagName);
+            footLike = itemView.findViewById(R.id.bar_item_foot_likeNum);
+            footReply = itemView.findViewById(R.id.bar_item_foot_replyNum);
+            footTime = itemView.findViewById(R.id.bar_item_foot_time);
         }
     }
 }

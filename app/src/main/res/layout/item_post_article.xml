@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/user_info_bar"
+        layout="@layout/bar_user_info"
         android:layout_width="match_parent"
         android:layout_height="@dimen/userBar_height"
         android:layout_margin="10dp" />
@@ -21,7 +21,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="6dp"
         app:cardCornerRadius="@dimen/post_card_corner"
         app:cardElevation="@dimen/post_card_ele">
 
@@ -56,6 +56,12 @@
 
 
     </com.google.android.material.card.MaterialCardView>
+
+    <include layout="@layout/bar_item_foot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
 </LinearLayout>
 
