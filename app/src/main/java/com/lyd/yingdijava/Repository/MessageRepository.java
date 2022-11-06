@@ -9,9 +9,9 @@ import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.Banner.BannerRoot;
 import com.lyd.yingdijava.Entity.Community.BaseCommunityNode;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
-import com.lyd.yingdijava.Entity.Deck.HsDeckInfo;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Entity.News.NewsNodeFoot;
+import com.lyd.yingdijava.Entity.User.User;
 import com.lyd.yingdijava.Info.UrlInfo;
 import com.lyd.yingdijava.Utils.TextUtils;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
@@ -22,9 +22,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -229,9 +227,15 @@ public class MessageRepository {
                                         }
                                         node.setPostImgList(tempImgList);
                                     }
+                                    //获取用户数据
+                                    node.setUser(new User());
+                                    node.getUser().setPortrait_url(e.selectFirst("img.avatar").attr("src"));
+                                    node.getUser().setName(e.selectFirst("a.name").selectFirst("span").text());
+                                    node.getUser().setLevel(e.selectFirst("li.level").text());
                                 } else if (e.select("div.deck-item").size() > 0){
                                     node.setPostType(BaseCommunityNode.PostType.DeskPost);
-
+                                    if (e.select("div.desc").size() > 0)//防止有人发帖写文本
+                                        node.setText_preView(e.select("div.desc").first().text());
                                     //这里开始拿卡组的json字符串
                                     StringBuffer sb = new StringBuffer(script.toString());
                                     sb.delete(0,sb.indexOf("postsList"))
@@ -245,17 +249,15 @@ public class MessageRepository {
                                             .replaceAll(mySign,"\\\\\\\\\\\\");//再将标记转回三个反斜杠
 //                                      Log.i(TAG, "finalJson: " + finalJson);
                                     Log.i(TAG, "deckInfoJson: " + deckInfoJson);
-                                    Gson mGson = new Gson();
                                     //这里应该按照tag来区分究竟是什么类型的卡组
-                                    switch (tagName){
-                                        case "炉石":
-                                            HsDeckInfo deckInfo = mGson.fromJson(deckInfoJson,HsDeckInfo.class);
-                                            Log.i(TAG, "onResponse: " + deckInfo.getName());
-                                            break;
-                                        default:break;
-                                    }
+                                    node.setDeckTag(tagName);
+                                    node.setDeckInfo(deckInfoJson);//交给adapter来完成转化，这里不做处理
 //                                          Log.w(TAG, "是卡组帖子: " + e.select("div.title").text());
-
+                                    //获取用户数据
+                                    node.setUser(new User());
+                                    node.getUser().setPortrait_url(e.selectFirst("img.avatar").attr("src"));
+                                    node.getUser().setName(e.selectFirst("a.name").selectFirst("span").text());
+                                    node.getUser().setLevel(e.selectFirst("li.level").text());
 
                                 } else if (e.select("div.vote-result").size() > 0){
                                     node.setPostType(BaseCommunityNode.PostType.VotePost);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="userBar_height">47dp</dimen>
+    <dimen name="post_RootLinear_margin">10dp</dimen>
+    <dimen name="post_card_ele">3dp</dimen>
+    <dimen name="post_card_corner">10dp</dimen>
+</resources>

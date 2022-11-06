@@ -21,4 +21,9 @@
     <color name="半透明黑_30">#4D000000</color>
     <color name="半透明黑_50">#80000000</color>
     <color name="半透明黑_40">#66000000</color>
+
+    <color name="传说">#ff9900</color>
+    <color name="史诗">#9933ff</color>
+    <color name="稀有">#0066ff</color>
+    <color name="分割线_半透明灰">#80CCCCCC</color>
 </resources>

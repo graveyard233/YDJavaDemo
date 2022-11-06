@@ -1,39 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_post_Article_linear"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:layout_margin="5dp"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="10dp">
+    android:layout_margin="@dimen/post_RootLinear_margin"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/item_post_article_img"
+    <include
+        layout="@layout/user_info_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/userBar_height"
+        android:layout_margin="10dp" />
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="@dimen/post_card_corner"
+        app:cardElevation="@dimen/post_card_ele">
 
-        />
+        <ImageView
+            android:id="@+id/item_post_article_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            />
 
-    <TextView
-        android:id="@+id/item_post_article_title"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_post_article"
+            />
 
-        android:gravity="bottom"
-        android:layout_gravity="bottom"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_post_article"
-        android:paddingLeft="3dp"
-        android:paddingBottom="2dp"
-        tools:text="社区文章"
-        android:includeFontPadding="false"/>
+        <TextView
+            android:id="@+id/item_post_article_title"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            tools:text="社区文章"
+            android:includeFontPadding="false"/>
 
 
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
+

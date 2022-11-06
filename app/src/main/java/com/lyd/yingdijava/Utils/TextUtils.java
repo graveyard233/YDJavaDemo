@@ -70,4 +70,15 @@ public class TextUtils {
         sb.append(unicodeStr.substring(count, length));//添加末尾不是Unicode的字符
         return sb.toString();
     }
+
+    /**
+     * 首字母大写
+     * */
+    public static String upperFirstCase(String str) {
+        char[] ch = str.toCharArray();
+        if (ch[0] >= 'a' && ch[0] <= 'z') {
+            ch[0] = (char) (ch[0] - 32);
+        }
+        return new String(ch);
+    }
 }

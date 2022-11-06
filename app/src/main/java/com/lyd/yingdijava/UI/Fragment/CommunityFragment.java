@@ -1,11 +1,14 @@
 package com.lyd.yingdijava.UI.Fragment;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -17,6 +20,7 @@ import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.UI.Adapter.CommunityMultiItemAdapter;
 import com.lyd.yingdijava.UI.Base.BaseFragment;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Widget.SpacesItemDecoration;
 import com.lyd.yingdijava.ViewModel.MessageViewModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -118,6 +122,9 @@ public class CommunityFragment extends BaseFragment {
         adapter.setEmptyViewLayout(CommunityFragment.this.requireContext(),R.layout.layout_load_error);
 
         linearLayoutManager = new LinearLayoutManager(getContext());
+        SpacesItemDecoration itemDecoration = new SpacesItemDecoration(recyclerView.getContext(),SpacesItemDecoration.VERTICAL,0,1)
+                .setParam(R.color.分割线_半透明灰,3,30,30);
+        recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override

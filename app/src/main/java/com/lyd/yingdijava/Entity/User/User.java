@@ -37,4 +37,13 @@ public class User {
     public void setPortrait_url(String portrait_url) {
         this.portrait_url = portrait_url;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", level='" + level + '\'' +
+                ", portrait_url='" + portrait_url + '\'' +
+                '}';
+    }
 }

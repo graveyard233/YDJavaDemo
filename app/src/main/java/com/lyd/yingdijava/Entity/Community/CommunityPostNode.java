@@ -1,14 +1,13 @@
 package com.lyd.yingdijava.Entity.Community;
 
-import org.jsoup.nodes.Element;
-
 import java.util.List;
 
 public class CommunityPostNode extends BaseCommunityNode{
 
     private List<String> postImgList;
 
-    private String deskInfo;
+    private String deckInfo;
+    private String deckTag;
 
     private String titleImgUrl;
 
@@ -19,8 +18,11 @@ public class CommunityPostNode extends BaseCommunityNode{
         this.postImgList = postImgList;
     }
 
-    public void setDeskInfo(String deskInfo) {
-        this.deskInfo = deskInfo;
+    public void setDeckInfo(String deckInfo) {
+        this.deckInfo = deckInfo;
+    }
+    public void setDeckTag(String deckTag) {
+        this.deckTag = deckTag;
     }
 
     public void setTitleImgUrl(String titleImgUrl) {
@@ -38,8 +40,14 @@ public class CommunityPostNode extends BaseCommunityNode{
             return null;
     }
 
-    public String getDeskInfo() {
-        return deskInfo;
+    public String getDeckInfo() {
+        if (deckInfo == null || deckInfo.equals(""))
+            return null;
+        else
+            return deckInfo;
+    }
+    public String getDeckTag() {
+        return deckTag;
     }
 
     public String getTitleImgUrl() {
