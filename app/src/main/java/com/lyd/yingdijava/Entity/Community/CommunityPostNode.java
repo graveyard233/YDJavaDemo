@@ -1,5 +1,7 @@
 package com.lyd.yingdijava.Entity.Community;
 
+import com.lyd.yingdijava.Entity.Vote.VoteMsg;
+
 import java.util.List;
 
 public class CommunityPostNode extends BaseCommunityNode{
@@ -11,7 +13,7 @@ public class CommunityPostNode extends BaseCommunityNode{
 
     private String titleImgUrl;
 
-    private String voteMsg;
+    private VoteMsg voteMsg;
 
 
     public void setPostImgList(List<String> postImgList) {
@@ -29,7 +31,7 @@ public class CommunityPostNode extends BaseCommunityNode{
         this.titleImgUrl = titleImgUrl;
     }
 
-    public void setVoteMsg(String voteMsg) {
+    public void setVoteMsg(VoteMsg voteMsg) {
         this.voteMsg = voteMsg;
     }
 
@@ -54,7 +56,7 @@ public class CommunityPostNode extends BaseCommunityNode{
         return titleImgUrl;
     }
 
-    public String getVoteMsg() {
+    public VoteMsg getVoteMsg() {
         return voteMsg;
     }
 }

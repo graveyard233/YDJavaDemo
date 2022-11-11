@@ -13,6 +13,7 @@ import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
 import com.lyd.yingdijava.Entity.News.NewsNodeFoot;
 import com.lyd.yingdijava.Entity.User.User;
+import com.lyd.yingdijava.Entity.Vote.VoteMsg;
 import com.lyd.yingdijava.Info.UrlInfo;
 import com.lyd.yingdijava.Utils.TextUtils;
 import com.lyd.yingdijava.ViewModel.CallBack.SimpleListCallBack;
@@ -216,7 +217,7 @@ public class MessageRepository {
     //                                Log.d(TAG, "是文章帖子: " + e.select("div.title").text());
                                     node.setPostType(BaseCommunityNode.PostType.ArticlePost);
                                     node.setTitleImgUrl(e.select("img.cover").first().attr("src"));
-                                } else if (e.select("div.mt-10").size() == 0){
+                                } else if (e.select("div.mt-10").size() == 0 && e.select("div.vote-result").size() == 0){
 //                                    Log.i(TAG, "是常规帖子,没有图片: " + e.select("div.title").text());
                                     node.setPostType(BaseCommunityNode.PostType.RoutinePost);
                                     node.setText_preView(e.select("div.desc").first().text());
@@ -262,6 +263,21 @@ public class MessageRepository {
 
                                 } else if (e.select("div.vote-result").size() > 0){
                                     node.setPostType(BaseCommunityNode.PostType.VotePost);
+                                    //获取用户数据
+                                    node.setUser(new User());
+                                    node.getUser().setPortrait_url(e.selectFirst("img.avatar").attr("src"));
+                                    node.getUser().setName(e.selectFirst("a.name").selectFirst("span").text());
+                                    node.getUser().setLevel(e.selectFirst("li.level").text());
+                                    //获取帖主评论
+                                    node.setText_preView(e.select("div.desc").first().text());
+                                    //获取投票数据
+                                    VoteMsg voteMsg = new VoteMsg();
+                                    voteMsg.setViewPoint1(e.select("p.vote-text").first().text());
+                                    voteMsg.setViewPoint2(e.select("p.vote-text").get(1).text());
+                                    voteMsg.setViewPoint_line1(e.select("div.vote-line").first().select("span").first().text());
+                                    voteMsg.setViewPoint_line2(e.select("div.vote-line").get(1).select("span").first().text());
+                                    node.setVoteMsg(voteMsg);
+
     //                                Log.e(TAG, "是投票: " + e.select("div.title").text());
                                 }
                                 //统一处理foot

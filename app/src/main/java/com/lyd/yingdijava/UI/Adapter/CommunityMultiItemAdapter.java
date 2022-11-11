@@ -1,9 +1,11 @@
 package com.lyd.yingdijava.UI.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemAdapter;
 import com.google.gson.Gson;
@@ -30,6 +33,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
     private static final int ROUTINE = 0;
     private static final int ARTICLE = 1;
     private static final int DECK = 2;
+    private static final int VOTE = 3;
 
     public CommunityMultiItemAdapter(@NonNull List<? extends CommunityPostNode> items) {
         super(items);
@@ -202,9 +206,46 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                 }
             }
         };
+        OnMultiItemAdapterListener<CommunityPostNode,VoteVH> listenerVote = new OnMultiItemAdapterListener<CommunityPostNode, VoteVH>() {
+            @NonNull
+            @Override
+            public VoteVH onCreate(@NonNull Context context, @NonNull ViewGroup viewGroup, int i) {
+                return new VoteVH(LayoutInflater.from(context).inflate(R.layout.item_post_vote,viewGroup,false));
+        }
+
+            @Override
+            public void onBind(@NonNull VoteVH voteVH, int i, @Nullable CommunityPostNode communityPostNode) {
+                voteVH.title.setText(communityPostNode.getTitle());
+                voteVH.textPreview.setText(communityPostNode.getText_preView());
+                if (communityPostNode.getUser() != null){
+                    voteVH.userName.setText(communityPostNode.getUser().getName());
+                    voteVH.userLevel.setText(communityPostNode.getUser().getLevel());
+                    Glide.with(getContext())
+                            .load(communityPostNode.getUser().getPortrait_url())
+                            .placeholder(R.drawable.img_loading)
+                            .error(R.drawable.img_load_error)
+                            .into(voteVH.userImg);
+                }
+                if (communityPostNode.getFoot() != null){
+                    voteVH.footTag.setText("#" + communityPostNode.getFoot().getTagList().get(0));
+                    voteVH.footLike.setText(communityPostNode.getFoot().getLikeNum());
+                    voteVH.footReply.setText(communityPostNode.getFoot().getReplyNum());
+                    voteVH.footTime.setText(communityPostNode.getFoot().getTime());
+                }
+                if (communityPostNode.getVoteMsg() == null)
+                    return;
+                voteVH.viewPoint1.setText(communityPostNode.getVoteMsg().getViewPoint1());
+                voteVH.viewPoint2.setText(communityPostNode.getVoteMsg().getViewPoint2());
+                voteVH.viewPoint_line1.setText(communityPostNode.getVoteMsg().getViewPoint_line1());
+                voteVH.viewPoint_line2.setText(communityPostNode.getVoteMsg().getViewPoint_line2());
+                voteVH.viewPoint_line1.getLayoutParams().width = (int) (ScreenUtils.getScreenWidth() / 2 * Float.parseFloat(communityPostNode.getVoteMsg().getViewPoint_line1().replaceAll("%", "")) / 100);
+                voteVH.viewPoint_line2.getLayoutParams().width = (int) (ScreenUtils.getScreenWidth() / 2 * Float.parseFloat(communityPostNode.getVoteMsg().getViewPoint_line2().replaceAll("%", "")) / 100);
+            }
+        };
         addItemType(ROUTINE,RoutineVH.class,listenerRoutine);
         addItemType(ARTICLE,ArticleVH.class,listenerArticle);
         addItemType(DECK,DeckHsVH.class,listenerDeckHs);
+        addItemType(VOTE,VoteVH.class,listenerVote);
         onItemViewType(new OnItemViewTypeListener<CommunityPostNode>() {
             @Override
             public int onItemViewType(int i, @NonNull List<? extends CommunityPostNode> list) {
@@ -213,6 +254,8 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                         return ARTICLE;
                     case DeskPost:
                         return DECK;
+                    case VotePost:
+                        return VOTE;
                     default:
                         return ROUTINE;
                 }
@@ -284,6 +327,40 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
             textPreview = itemView.findViewById(R.id.item_post_deck_text);
             imgBar = itemView.findViewById(R.id.item_post_deck_imgBar);
             postLinear = itemView.findViewById(R.id.item_post_deck_linear);
+            userImg = itemView.findViewById(R.id.user_img_portrait);
+            userName = itemView.findViewById(R.id.user_text_name);
+            userLevel = itemView.findViewById(R.id.user_text_level);
+            footTag = itemView.findViewById(R.id.bar_item_foot_tagName);
+            footLike = itemView.findViewById(R.id.bar_item_foot_likeNum);
+            footReply = itemView.findViewById(R.id.bar_item_foot_replyNum);
+            footTime = itemView.findViewById(R.id.bar_item_foot_time);
+        }
+    }
+
+    protected class VoteVH extends RecyclerView.ViewHolder{
+        TextView title;
+        TextView textPreview;
+        TextView viewPoint1;
+        TextView viewPoint2;
+        TextView viewPoint_line1;
+        TextView viewPoint_line2;
+
+        ImageView userImg;
+        TextView userName;
+        TextView userLevel;
+        TextView footTag;
+        TextView footLike;
+        TextView footReply;
+        TextView footTime;
+        public VoteVH(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.item_post_vote_title);
+            textPreview = itemView.findViewById(R.id.item_post_vote_text);
+            viewPoint1 = itemView.findViewById(R.id.item_post_vote_viewPoint1_text);
+            viewPoint2 = itemView.findViewById(R.id.item_post_vote_viewPoint2_text);
+            viewPoint_line1 = itemView.findViewById(R.id.item_post_vote_viewPoint_line1);
+            viewPoint_line2 = itemView.findViewById(R.id.item_post_vote_viewPoint_line2);
+
             userImg = itemView.findViewById(R.id.user_img_portrait);
             userName = itemView.findViewById(R.id.user_text_name);
             userLevel = itemView.findViewById(R.id.user_text_level);
