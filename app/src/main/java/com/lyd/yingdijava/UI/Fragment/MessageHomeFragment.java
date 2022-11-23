@@ -32,7 +32,7 @@ public class MessageHomeFragment extends BaseFragment {
 
         initChildrenFragment();
         viewPager.setUserInputEnabled(false);
-        viewPager.setAdapter(new FragmentStateAdapter(getParentFragmentManager(),getLifecycle()) {
+        viewPager.setAdapter(new FragmentStateAdapter(getChildFragmentManager(),getLifecycle()) {
             @NonNull
             @Override
             public Fragment createFragment(int position) {

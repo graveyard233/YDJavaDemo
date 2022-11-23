@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/fragment_main_tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/月色白"
+        app:tl_textsize="20dp"
+        app:tl_indicator_color="@color/深竹月"
+        app:tl_indicator_style="NORMAL"
+        app:tl_textSelectColor="@color/深竹月_浅色"
+        app:tl_textUnselectColor="@color/水貂灰"
+        app:tl_tab_space_equal="true"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        app:tl_textBold="BOTH"
+        />
+
+    <com.lyd.yingdijava.UI.Widget.HorizontalInterceptionViewPager
+        android:id="@+id/fragment_main_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/fragment_main_bottomNavigation"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/月色白"
+        app:menu="@menu/flow_menu"
+        />
+
+</LinearLayout>

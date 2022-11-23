@@ -136,6 +136,7 @@ public class NewsFragment extends BaseFragment{
             @Override
             public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
                 ToastUtils.getDefaultMaker().show(baseQuickAdapter.getItem(i).getTitle());
+                nav().navigate(R.id.newsWebFragment);
             }
         });
 

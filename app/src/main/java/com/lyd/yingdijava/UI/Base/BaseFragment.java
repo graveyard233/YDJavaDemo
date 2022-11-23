@@ -9,6 +9,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 public abstract class BaseFragment extends Fragment {
     protected View contentView;
@@ -18,6 +20,10 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initViews();
 
     protected abstract int getLayoutId();
+
+    protected final NavController nav(){
+        return NavHostFragment.Companion.findNavController(this);
+    }
 
     @Nullable
     @Override
