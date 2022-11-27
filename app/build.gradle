@@ -70,5 +70,13 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.5.3"//navigation导航
     implementation "androidx.navigation:navigation-ui:2.5.3"
 
+    def scene_version = '1.3.1'
+    implementation "com.github.bytedance.scene:scene:$scene_version"
+    implementation "com.github.bytedance.scene:scene_navigation:$scene_version"
+    implementation "com.github.bytedance.scene:scene_ui:$scene_version"
+    implementation "com.github.bytedance.scene:scene_dialog:$scene_version"
+    implementation "com.github.bytedance.scene:scene_shared_element_animation:$scene_version"
+    implementation "com.github.bytedance.scene:scene_ktx:$scene_version"
+
 
 }
