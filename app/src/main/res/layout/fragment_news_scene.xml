@@ -23,6 +23,16 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/news_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="9"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/news_bottom"
+        app:menu="@menu/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
 
 </LinearLayout>

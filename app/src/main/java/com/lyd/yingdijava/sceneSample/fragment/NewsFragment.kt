@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.bytedance.scene.group.GroupScene
 import com.bytedance.scene.group.UserVisibleHintGroupScene
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lyd.yingdijava.R
@@ -20,6 +21,7 @@ class NewsFragment : GroupScene(){
 
     private lateinit var mViewPage : ViewPager2
     private val titleList : Array<String> = arrayOf("a","b","c")
+    private lateinit var bottomNav : BottomNavigationView
 
     companion object{
         fun newInstance(index:Int): NewsFragment {
@@ -38,7 +40,27 @@ class NewsFragment : GroupScene(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewPage = view.findViewById(R.id.news_vp)
-        mViewPage.adapter = MyCollectionAdapter(this)
+        val mAdapter = MyCollectionAdapter(this)
+        mViewPage.adapter = mAdapter
+
+        bottomNav = view.findViewById(R.id.news_bottom)
+        bottomNav.setOnItemSelectedListener (){
+            val mSmall = mAdapter.getmScenes().get(mAdapter.getItemId(mViewPage.currentItem)) as MySmallScene
+            when(it.itemId){
+                R.id.bottom_news -> mSmall.choiceLeft()
+                R.id.bottom_community -> mSmall.choiceRight()
+            }
+            true
+        }
+
+        mViewPage.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                val mSmall = mAdapter.getmScenes().get(mAdapter.getItemId(mViewPage.currentItem))
+                mSmall?.let { it as MySmallScene }?.getCurrentFragment()
+                    ?.let { bottomNav.menu.getItem(it).isChecked = true}
+            }
+        })
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,44 +78,10 @@ class MyCollectionAdapter(groupScene: GroupScene) : SceneAdapter(groupScene) {
     override fun getItemCount(): Int = 3
 
     override fun createScene(position: Int): UserVisibleHintGroupScene {
-        val scene = DemoObjectScene()
-        scene.setArguments(Bundle().apply {
-            putInt(ARG_OBJECT, position)
-        })
-        return scene
+        return MySmallScene().apply {
+            setArguments(Bundle().apply { putInt(ARG_OBJECT, position) })
+        }
     }
 }
 
 private const val ARG_OBJECT = "object"
-
-class DemoObjectScene : UserVisibleHintGroupScene() {
-    private var value: Int = 0
-    private val mId:Int by lazy { View.generateViewId() }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup,
-        savedInstanceState: Bundle?
-    ): ViewGroup {
-        val frame =  FrameLayout(requireSceneContext())
-        frame.id = mId
-//        val bottom = BottomFragment.newInstance(1)
-//        frame.addView(bottom as ViewGroup,FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT))
-        //        frameLayout.id = mId
-//        return frame
-        return frame
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        value = arguments?.getInt(ARG_OBJECT)!!
-        add(mId, BottomFragment.newInstance(1),"TAG")
-//        val textView: TextView = view.findViewById(android.R.id.text1)
-//        textView.text = value.toString()
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        Log.d("DemoObjectScene $value", "setUserVisibleHint: $isVisibleToUser")
-    }
-}

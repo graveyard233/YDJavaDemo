@@ -25,7 +25,7 @@ class BottomFragment : BottomNavigationViewScene(){
     }
 
     override fun getMenuResId(): Int {
-        return R.menu.bottom_navgation
+        return R.menu.bottom_navigation
     }
 
     override fun getSceneMap(): LinkedHashMap<Int, Scene> {

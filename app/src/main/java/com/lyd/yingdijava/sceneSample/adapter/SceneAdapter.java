@@ -32,6 +32,12 @@ public abstract class SceneAdapter extends RecyclerView.Adapter<SceneViewHolder>
     private boolean mIsInGracePeriod = false;
     private boolean mHasStaleScenes = false;
 
+    public LongSparseArray<UserVisibleHintGroupScene> getmScenes(){
+        if (!mScenes.isEmpty())
+            return mScenes;
+        else return null;
+    }
+
     public SceneAdapter(@NonNull GroupScene groupScene) {
         mGroupScene = groupScene;
         super.setHasStableIds(true);
