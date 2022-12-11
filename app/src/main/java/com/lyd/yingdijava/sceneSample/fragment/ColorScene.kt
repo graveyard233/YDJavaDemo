@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.bytedance.scene.Scene
 import com.bytedance.scene.group.UserVisibleHintGroupScene
 import com.lyd.yingdijava.R
 
@@ -30,5 +31,16 @@ class ColorScene : UserVisibleHintGroupScene() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+    }
+}
+
+class MyEmptyScene : Scene() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View {
+        val view = View(activity)
+        view.setBackgroundColor(resources.getColor(R.color.indigo_300))
+
+//        arguments?.getInt("color",2)
+//            ?.let { ColorUtil.getMaterialColor(resources, it) }?.let { view.setBackgroundColor(it) }
+        return view
     }
 }
