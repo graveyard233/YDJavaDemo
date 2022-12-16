@@ -2,7 +2,6 @@ package com.lyd.yingdijava.UI.Fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,27 +9,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bytedance.scene.Scene;
+
 import com.bytedance.scene.group.GroupScene;
 import com.bytedance.scene.group.UserVisibleHintGroupScene;
-import com.flyco.tablayout.SlidingTabLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.UI.Adapter.SceneAdapter;
-import com.lyd.yingdijava.UI.Base.BaseFragment;
-import com.lyd.yingdijava.UI.Base.MainNavScene;
-import com.lyd.yingdijava.UI.Widget.HorizontalInterceptionViewPager;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class MainFragment extends GroupScene {
     private ViewPager2 mViewPage;
@@ -42,17 +32,17 @@ public class MainFragment extends GroupScene {
     @NonNull
     @Override
     public ViewGroup onCreateView(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup, @Nullable Bundle bundle) {
-        return (ViewGroup) layoutInflater.inflate(R.layout.fragment_main_,viewGroup,false);
+        return (ViewGroup) layoutInflater.inflate(R.layout.fragment_main,viewGroup,false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPage = view.findViewById(R.id.fragment_main__vp);
+        mViewPage = view.findViewById(R.id.fragment_main_vp);
         MyCollectionAdapter mAdapter = new MyCollectionAdapter(this);
         mViewPage.setAdapter(mAdapter);
         mViewPage.setOffscreenPageLimit(1);
-        bottomNav = view.findViewById(R.id.fragment_main__bottom);
+        bottomNav = view.findViewById(R.id.fragment_main_bottom);
         bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -88,7 +78,7 @@ public class MainFragment extends GroupScene {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TabLayout tabLayout = requireViewById(R.id.fragment_main__tabLayout);
+        TabLayout tabLayout = requireViewById(R.id.fragment_main_tabLayout);
         tabLayout.setTabTextColors(Color.parseColor("#c79100"),Color.parseColor("#fff350"));
         TabLayoutMediator mediator = new TabLayoutMediator(tabLayout, mViewPage, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -110,7 +100,7 @@ public class MainFragment extends GroupScene {
         public UserVisibleHintGroupScene createScene(int position) {
             MsgHomeFragment msgHomeFragment = new MsgHomeFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(ARG_OBJECT,position);
+            bundle.putString("TAG",titleList[position]);
             msgHomeFragment.setArguments(bundle);
             return msgHomeFragment;
         }

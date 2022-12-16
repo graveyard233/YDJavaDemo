@@ -18,6 +18,7 @@ import com.bytedance.scene.navigation.OnBackPressedListener;
 import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.UI.Adapter.MySceneInstanceUtility;
 import com.lyd.yingdijava.UI.Base.MainNavScene;
+import com.lyd.yingdijava.UI.Fragment.ColorFragment;
 import com.lyd.yingdijava.UI.Fragment.MainFragment;
 
 import java.util.LinkedHashMap;
@@ -54,12 +55,12 @@ public class MainScene extends MainNavScene {
         map.put(R.id.news,mNavigationScene);
         mNavigationScene = (NavigationScene) MySceneInstanceUtility.getInstanceFromClass(
                 NavigationScene.class,
-                new NavigationSceneOptions(MainFragment.class,getBundle(1)).toBundle()
+                new NavigationSceneOptions(ColorFragment.class,getBundle(1)).toBundle()
         );
         map.put(R.id.shoucang,mNavigationScene);
         mNavigationScene = (NavigationScene) MySceneInstanceUtility.getInstanceFromClass(
                 NavigationScene.class,
-                new NavigationSceneOptions(MainFragment.class,getBundle(2)).toBundle()
+                new NavigationSceneOptions(ColorFragment.class,getBundle(2)).toBundle()
         );
         map.put(R.id.setting,mNavigationScene);
         return map;

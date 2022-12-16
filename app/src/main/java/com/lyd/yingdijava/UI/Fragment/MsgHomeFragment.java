@@ -1,6 +1,7 @@
 package com.lyd.yingdijava.UI.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bytedance.scene.group.GroupScene;
 import com.bytedance.scene.group.UserVisibleHintGroupScene;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.UI.Adapter.SceneAdapter;
-
-import java.util.ArrayList;
 
 public class MsgHomeFragment extends UserVisibleHintGroupScene {
 
@@ -24,6 +22,7 @@ public class MsgHomeFragment extends UserVisibleHintGroupScene {
     @NonNull
     @Override
     public ViewGroup onCreateView(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup, @Nullable Bundle bundle) {
+        Log.i("LYD", "onCreateView: " + getArguments().getString("TAG"));
         return (ViewGroup) layoutInflater.inflate(R.layout.fragment_msg_home,viewGroup,false);
     }
 
@@ -55,11 +54,18 @@ public class MsgHomeFragment extends UserVisibleHintGroupScene {
         @NonNull
         @Override
         public UserVisibleHintGroupScene createScene(int position) {
-            ColorFragment colorFragment = new ColorFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("object",position);
-            colorFragment.setArguments(bundle);
-            return colorFragment;
+            bundle.putString("TAG",getArguments().getString("TAG"));
+            if (position == 0){
+                NewsFragment newsFragment = new NewsFragment();
+                newsFragment.setArguments(bundle);
+                return newsFragment;
+            } else {
+                CommunityFragment communityFragment = new CommunityFragment();
+                communityFragment.setArguments(bundle);
+                return communityFragment;
+            }
+
         }
 
         @Override

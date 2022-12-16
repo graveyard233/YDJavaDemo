@@ -1,23 +1,27 @@
 package com.lyd.yingdijava.UI.Fragment;
 
-import android.util.Log;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.bytedance.scene.group.UserVisibleHintGroupScene;
+import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lyd.yingdijava.Entity.Banner.BannerNode;
 import com.lyd.yingdijava.Entity.News.NewsNode;
+import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.UI.Adapter.NewsBannerAdapter;
 import com.lyd.yingdijava.UI.Adapter.NewsRecyclerViewAdapter;
-import com.lyd.yingdijava.UI.Base.BaseFragment;
-import com.lyd.yingdijava.R;
 import com.lyd.yingdijava.ViewModel.MessageViewModel;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -30,9 +34,9 @@ import com.youth.banner.indicator.CircleIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsFragment extends BaseFragment{
-    private final String TAG = "NewsFragment";
+public class NewsFragment extends UserVisibleHintGroupScene {
 
+    private final String TAG = "NewsScene";
     private MessageViewModel messageViewModel;
 
     private SmartRefreshLayout refreshLayout;
@@ -43,17 +47,37 @@ public class NewsFragment extends BaseFragment{
 
     private Banner banner;
 
-    // todo 处理refresh滑动冲突，需要重写事件分发
+    private String newsTag;
+    private String getDataTag() {
+        return newsTag;
+    }
+
+    @NonNull
     @Override
-    protected void initViews() {
-        Log.i("TAG", "NewsFragment: " + getDataTag());
+    public ViewGroup onCreateView(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup, @Nullable Bundle bundle) {
+        //这里是放layout
+        newsTag = getArguments().getString("TAG","炉石");
+        return (ViewGroup) layoutInflater.inflate(R.layout.fragment_news,viewGroup,false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //这里进行初始化View工作
         initViewModel();
-        observeLiveData();
-
-        initRecyclerView();
         initBanner();
-        refreshLayout = find(R.id.news_refresh_layout);
+        initRecyclerView();
+
+    }
+
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //这里实现业务逻辑？一般是viewCreate先，然后再到这个
+        observeLiveData();
+        refreshLayout = findViewById(R.id.news_refresh_layout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -61,13 +85,43 @@ public class NewsFragment extends BaseFragment{
                 getBanner();
             }
         });
-
     }
 
     private void initViewModel() {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this);
         messageViewModel = viewModelProvider.get(MessageViewModel.class);
     }
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.news_recyclerView);
+
+        adapter = new NewsRecyclerViewAdapter();
+        adapter.setEmptyViewEnable(true);
+        adapter.setEmptyViewLayout(this.requireSceneContext(),R.layout.layout_load_error);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<NewsNode>() {
+            @Override
+            public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
+//                ToastUtils.getDefaultMaker().show(baseQuickAdapter.getItem(i).getTitle());
+                Bundle bundle = new Bundle();
+                bundle.putString("TITLE",baseQuickAdapter.getItem(i).getTitle());
+                bundle.putString("URL",baseQuickAdapter.getItem(i).getTargetUrl());
+                NewsWebFragment webFragment = new NewsWebFragment();
+                webFragment.setArguments(bundle);
+                NavigationSceneExtensionsKt.getNavigationScene(NewsFragment.this)
+                        .push(webFragment);
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(requireSceneContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initBanner(){
+        banner = findViewById(R.id.news_banner);
+    }
+
+
 
     private void getBanner(){
         messageViewModel.getBannerListFromModel(getDataTag());
@@ -102,8 +156,8 @@ public class NewsFragment extends BaseFragment{
 //                            bannerNodes.get(0).getTitle()));
 //                }
                 banner.setAdapter(new NewsBannerAdapter(bannerNodes),true)
-                        .addBannerLifecycleObserver(getViewLifecycleOwner())
-                        .setIndicator(new CircleIndicator(getContext()))
+                        .addBannerLifecycleObserver(getUserVisibleHintLifecycleOwner())
+                        .setIndicator(new CircleIndicator(getSceneContext()))
                         .setLoopTime(10000);
             }
         });
@@ -125,36 +179,5 @@ public class NewsFragment extends BaseFragment{
             }
         });
     }
-
-    private void initRecyclerView() {
-        recyclerView = find(R.id.news_recyclerView);
-
-        adapter = new NewsRecyclerViewAdapter();
-        adapter.setEmptyViewEnable(true);
-        adapter.setEmptyViewLayout(NewsFragment.this.requireContext(),R.layout.layout_load_error);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<NewsNode>() {
-            @Override
-            public void onClick(@NonNull BaseQuickAdapter<NewsNode, ?> baseQuickAdapter, @NonNull View view, int i) {
-                ToastUtils.getDefaultMaker().show(baseQuickAdapter.getItem(i).getTitle());
-                nav().navigate(R.id.newsWebFragment);
-            }
-        });
-
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void initBanner(){
-        banner = find(R.id.news_banner);
-
-    }
-
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_news;
-    }
-
 
 }
