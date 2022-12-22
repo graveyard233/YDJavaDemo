@@ -21,6 +21,7 @@ import java.util.List;
 * 以后需要多布局的时候才用得到，先放着当作demo，以后可以参照这个来写
 *
 * */
+@Deprecated
 public class NewsMultiItemAdapter extends BaseMultiItemAdapter<NewsNode> {
 
     private static final int BANNER_TYPE = 0;
