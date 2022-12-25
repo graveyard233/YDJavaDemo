@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/bar_comment_foot_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="@dimen/bar_foot_min"
+            android:autoSizeMaxTextSize="@dimen/bar_foot_text"
+            tools:text="12-23"/>
+
+        <TextView
+            android:id="@+id/bar_comment_foot_IP"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="@dimen/bar_foot_min"
+            android:autoSizeMaxTextSize="@dimen/bar_foot_text"
+            tools:text="广东"/>
+<!--            android:textSize="@dimen/bar_foot_text"-->
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+        <TextView
+            android:id="@+id/bar_comment_foot_likeNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="@dimen/bar_foot_text_bigger"
+            tools:text="5 点火"
+            />
+
+        <TextView
+            android:id="@+id/bar_comment_foot_replyNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="@dimen/bar_foot_min"
+            android:autoSizeMaxTextSize="@dimen/bar_foot_text_bigger"
+            tools:text="3 回复"
+            />
+
+    </TableRow>
+
+
+
+</TableLayout>

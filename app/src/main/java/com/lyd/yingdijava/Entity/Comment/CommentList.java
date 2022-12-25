@@ -50,7 +50,10 @@ public class CommentList<T> {
     public void printHotComments(List<CommentsNode<CommentItem>> hot){
         for (CommentsNode<CommentItem> item :
                 hot) {
-            Log.i("HOT", item.getMain_comment().getComment().toString());
+            Log.i("HOT", item.getMain_comment().getCommentUser().getLevel()
+                    + " " + item.getMain_comment().getCommentInfo().getTime()
+                    + " " + item.getMain_comment().getCommentUser().getName()
+                    + ": " + item.getMain_comment().getComment().toString());
             if (item.getReply_comments() != null){
                 for (CommentItem reply :
                         item.getReply_comments()) {

@@ -12,28 +12,32 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/user_img_portrait"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            app:cardCornerRadius="50dp"
-            android:layout_marginRight="10dp">
-            <ImageView
-                android:id="@+id/user_img_portrait"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                tools:src="@drawable/ic_launcher_foreground"/>
+            app:roundPercent="1"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_launcher_foreground"/>
 
-        </androidx.cardview.widget.CardView>
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:cardCornerRadius="50dp"-->
+<!--            android:layout_marginRight="10dp">-->
+
+
+<!--        </androidx.cardview.widget.CardView>-->
 
 
         <TableLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6.5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="10dp">
 
             <TableRow
                 android:layout_width="match_parent"

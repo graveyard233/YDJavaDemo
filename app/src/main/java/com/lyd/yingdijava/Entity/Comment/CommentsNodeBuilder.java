@@ -72,23 +72,20 @@ public class CommentsNodeBuilder {
     private void buildHead(Element element,CommentItem item) {
         //写的详细点可以减少不必要的bug
         //设置用户名字
-        item.getCommentUser().setName(element.child(0).select("div.relative").select("div.user-title-area").first()
-                .select("div.user-info").first()
+        item.getCommentUser().setName(element.child(0).selectFirst("div.relative")
                 .select("h4.name").text());
         //设置用户等级
-        item.getCommentUser().setLevel(element.child(0).select("div.relative").select("div.user-title-area").first()
-                .select("div.user-info").first()
-                .select("div.honor").first().select("div.level").first().text());
+        item.getCommentUser().setLevel(element.child(0).selectFirst("div.relative")
+                .selectFirst("div.level").text());
         //设置用户头像url
-        item.getCommentUser().setPortrait_url(element.child(0).select("div.relative").select("div.user-title-area").first()
-                .select("div.user-head").first()
-                .select("img.avatar").first().attr("src"));
+        item.getCommentUser().setPortrait_url(element.child(0).selectFirst("div.relative")
+                .selectFirst("img.avatar").attr("src"));
     }
 
     private void buildMid(Element element,CommentItem item) {
-        item.getComment().setText(element.child(0).select("div.item-content-area").first().child(0)
-                .select("div.text-base").first().text());
-        if (element.child(0).select("div.item-content-area").first()
+        item.getComment().setText(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.text-base").text());
+        if (element.child(0).selectFirst("div.item-content-area")
                 .select("div.item-content-imgs").size() != 0){//如果评论有图片的话
             List<String> tempList = new ArrayList<>();
             for (Element e :
@@ -105,31 +102,31 @@ public class CommentsNodeBuilder {
     }
 
     private void buildFoot(Element element,CommentItem item) {
-        item.getCommentInfo().setTime(element.child(0).select("div.item-content-area").first().child(0)
-                .select("div.foot").first()
-                .select("div.time-box").first()
+        item.getCommentInfo().setTime(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.foot")
+                .selectFirst("div.time-box")
                 .child(0).text());
-        item.getCommentInfo().setIP(element.child(0).select("div.item-content-area").first().child(0)
-                .select("div.foot").first()
-                .select("div.time-box").first()
+        item.getCommentInfo().setIP(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.foot")
+                .selectFirst("div.time-box")
                 .child(1).text());
-        item.getCommentInfo().setLike(element.child(0).select("div.item-content-area").first().child(0)
-                .select("div.foot").first()
-                .child(1).child(0).select("span.cursor-pointer").first()
-                .select("span.inline-block").text());
-        item.getCommentInfo().setReplyNum(element.child(0).select("div.item-content-area").first().child(0)
-                .select("div.foot").first()
-                .child(1).child(1).select("span.inline-block").first().text());
+        item.getCommentInfo().setLike(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.foot")
+                .child(1).child(0).selectFirst("span.cursor-pointer")
+                .selectFirst("span.inline-block").text());
+        item.getCommentInfo().setReplyNum(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.foot")
+                .child(1).child(1).selectFirst("span.inline-block").text());
     }
 
     public CommentsNodeBuilder buildReply(Element element){
-        if (element.child(0).select("div.item-content-area").first()
+        if (element.child(0).selectFirst("div.item-content-area")
                 .select("div.children-content-area").size() != 0){//不等于0就是有回复
             List<CommentItem> tempList = new ArrayList<>();
             for (Element e :
-                    element.child(0).select("div.item-content-area").first()
-                            .select("div.children-content-area").first()
-                            .select("div.comment-childs").first()
+                    element.child(0).selectFirst("div.item-content-area")
+                            .selectFirst("div.children-content-area")
+                            .selectFirst("div.comment-childs")
                             .select("div.comment-child-box")) {
                 CommentItem tempItem = new CommentItem();
                 initOneComment(tempItem);
@@ -145,23 +142,23 @@ public class CommentsNodeBuilder {
 
 
     private void buildReply_itemHead(Element element,CommentItem item){
-        item.getCommentUser().setName(element.select("div.user-box").first().select("div.user-title-area").first()
-                .select("div.user-info").first()
-                .select("h4.name").first().text());
-        item.getCommentUser().setPortrait_url(element.select("div.user-box").first().select("div.user-title-area").first()
-                .select("div.user-head").first()
-                .select("img.avatar").first().attr("src"));
+        item.getCommentUser().setName(element.selectFirst("div.user-box").selectFirst("div.user-title-area")
+                .selectFirst("div.user-info")
+                .selectFirst("h4.name").text());
+        item.getCommentUser().setPortrait_url(element.selectFirst("div.user-box").selectFirst("div.user-title-area")
+                .selectFirst("div.user-head")
+                .selectFirst("img.avatar").attr("src"));
     }
 
     private void buildReply_itemMid(Element element,CommentItem item){
-        item.getComment().setText(element.select("div.child-content").first()
-                .select("p.text-base").first().text());
-        if (element.select("div.child-content").first()
+        item.getComment().setText(element.selectFirst("div.child-content")
+                .selectFirst("p.text-base").text());
+        if (element.selectFirst("div.child-content")
                 .select("div.images-box").size() != 0){
             List<String> tempList = new ArrayList<>();
             for (Element e :
-                    element.select("div.child-content").first()
-                            .select("div.images-box").first()
+                    element.selectFirst("div.child-content")
+                            .selectFirst("div.images-box")
                             .select("div.img-item")) {
                 StringBuffer sb = new StringBuffer(e.attr("style"));
                 sb.delete(0,sb.indexOf("http"));
@@ -173,21 +170,21 @@ public class CommentsNodeBuilder {
     }
 
     private void buildReply_itemFoot(Element element,CommentItem item){
-        item.getCommentInfo().setTime(element.select("div.child-content").first()
-                .select("div.foot").first()
-                .select("div.time-box").first()
+        item.getCommentInfo().setTime(element.selectFirst("div.child-content")
+                .selectFirst("div.foot")
+                .selectFirst("div.time-box")
                 .child(0).text());
-        item.getCommentInfo().setIP(element.select("div.child-content").first()
-                .select("div.foot").first()
-                .select("div.time-box").first()
+        item.getCommentInfo().setIP(element.selectFirst("div.child-content")
+                .selectFirst("div.foot")
+                .selectFirst("div.time-box")
                 .child(1).text());
-        item.getCommentInfo().setLike(element.select("div.child-content").first()
-                .select("div.foot").first()
-                .child(1).child(0).select("span.cursor-pointer").first()
+        item.getCommentInfo().setLike(element.selectFirst("div.child-content")
+                .selectFirst("div.foot")
+                .child(1).child(0).selectFirst("span.cursor-pointer")
                 .select("span.inline-block").text());
-        item.getCommentInfo().setReplyNum(element.select("div.child-content").first()
-                .select("div.foot").first()
-                .child(1).child(1).select("span.inline-block").first().text());
+        item.getCommentInfo().setReplyNum(element.selectFirst("div.child-content")
+                .selectFirst("div.foot")
+                .child(1).child(1).selectFirst("span.inline-block").text());
     }
 
 

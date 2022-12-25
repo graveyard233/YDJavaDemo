@@ -15,6 +15,10 @@ public class CommentsNode<T> {
         this.main_comment = main_comment;
     }
 
+    public boolean hasReply(){
+        return getReply_comments() != null;
+    }
+
     public List<T> getReply_comments() {
         if (reply_comments != null && reply_comments.size() > 0)
             return reply_comments;

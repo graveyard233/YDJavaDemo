@@ -29,15 +29,14 @@
 
 
 
-        <LinearLayout
-            android:id="@+id/fragment_webView_comment"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/fragment_webView_comment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:background="@color/月色白"
-            android:orientation="vertical">
+            android:background="@color/月色白">
 
 
-        </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

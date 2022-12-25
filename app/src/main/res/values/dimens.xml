@@ -5,4 +5,8 @@
     <dimen name="post_card_ele">3dp</dimen>
     <dimen name="post_card_corner">10dp</dimen>
     <dimen name="bar_foot_text">11sp</dimen>
+
+    <dimen name="comments_bar_title">25sp</dimen>
+    <dimen name="bar_foot_min">5sp</dimen>
+    <dimen name="bar_foot_text_bigger">15sp</dimen>
 </resources>

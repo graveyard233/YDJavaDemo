@@ -16,7 +16,10 @@ public class Comment {
     }
 
     public List<String> getImg_url_list() {
-        return img_url_list;
+        if (img_url_list != null)
+            return img_url_list;
+        else
+            return null;
     }
 
     public void setImg_url_list(List<String> img_url_list) {
