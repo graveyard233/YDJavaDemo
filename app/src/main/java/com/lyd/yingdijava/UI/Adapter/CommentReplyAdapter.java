@@ -33,7 +33,12 @@ public class CommentReplyAdapter extends BaseQuickAdapter<CommentItem, CommentRe
 
     @Override
     protected void onBindViewHolder(@NonNull ReplyVH replyVH, int i, @Nullable CommentItem commentItem) {
-        replyVH.userName.setText(commentItem.getCommentUser().getName());
+
+        if (commentItem.getCommentUser().getToWho() != null){
+            replyVH.userName.setText(commentItem.getCommentUser().getName() + " -> " + commentItem.getCommentUser().getToWho());
+        } else {
+            replyVH.userName.setText(commentItem.getCommentUser().getName());
+        }
         replyVH.userLevel.setText(commentItem.getCommentUser().getLevel());
         Glide.with(getContext())
                 .load(commentItem.getCommentUser().getPortrait_url())

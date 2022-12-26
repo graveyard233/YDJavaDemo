@@ -5,6 +5,8 @@ public class CommentUser {
 
     private String name;
 
+    private String toWho;//仅用于回复
+
     private String level;
 
     public String getPortrait_url() {
@@ -21,6 +23,17 @@ public class CommentUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToWho() {
+        if (toWho != null && toWho.length() > 0)
+            return toWho;
+        else
+            return null;
+    }
+
+    public void setToWho(String toWho) {
+        this.toWho = toWho;
     }
 
     public String getLevel() {

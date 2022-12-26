@@ -294,6 +294,7 @@ public class MessageRepository {
                                     foot.setTime(e.selectFirst("div.info").getElementsByTag("span").get(4).text());
                                 }
                                 node.setFoot(foot);
+                                node.setUrl(e.selectFirst("a.block").attr("href"));
                                 nodeList.add(node);
                             } catch (Exception ex) {
                                 ex.printStackTrace();

@@ -40,6 +40,18 @@ public class CommentsNodeBuilder {
     }
 
     /**
+     * 初始化基点,必定是热评
+     * */
+    public CommentsNodeBuilder initHotBaseNode(){
+        commentsNode = new CommentsNode<>();
+        mainComment = new CommentItem();
+
+        commentsNode.setMain_comment(mainComment);
+        commentsNode.isHot = true;
+        return instances;
+    }
+
+    /**
      * 只能传递 class="comment-item-component" 的element
      * */
     public CommentsNodeBuilder buildMain(Element element){
@@ -148,6 +160,11 @@ public class CommentsNodeBuilder {
         item.getCommentUser().setPortrait_url(element.selectFirst("div.user-box").selectFirst("div.user-title-area")
                 .selectFirst("div.user-head")
                 .selectFirst("img.avatar").attr("src"));
+        if (element.selectFirst("div.user-box").selectFirst("div.user-title-area").selectFirst("div.user-info").select("svg").size() == 1){//假如有谁对谁回复
+            item.getCommentUser().setToWho(element.selectFirst("div.user-box").selectFirst("div.user-title-area")
+                    .selectFirst("div.user-info")
+                    .select("h4.name").get(1).text());
+        }
     }
 
     private void buildReply_itemMid(Element element,CommentItem item){

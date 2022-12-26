@@ -7,6 +7,8 @@ public class CommentsNode<T> {
 
     private List<T> reply_comments;
 
+    public boolean isHot = false;
+
     public T getMain_comment() {
         return main_comment;
     }

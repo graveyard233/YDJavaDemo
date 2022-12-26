@@ -15,6 +15,8 @@ public abstract class BaseCommunityNode {
     }
     private PostType postType;
 
+    private String targetUrl;
+
     private User user;
 
     private String title;
@@ -29,6 +31,14 @@ public abstract class BaseCommunityNode {
 
     public void setPostType(PostType postType) {
         this.postType = postType;
+    }
+
+    public String getUrl() {
+        return targetUrl;
+    }
+
+    public void setUrl(String targetUrl) {
+        this.targetUrl = targetUrl;
     }
 
     public User getUser() {
