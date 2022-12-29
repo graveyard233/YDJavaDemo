@@ -79,4 +79,7 @@ dependencies {
     implementation "com.github.bytedance.scene:scene_ktx:$scene_version"
 
     implementation 'com.drakeet.drawer:drawer:1.0.3'//全屏拖拽侧边栏支持
+
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'//图片查看View
+
 }

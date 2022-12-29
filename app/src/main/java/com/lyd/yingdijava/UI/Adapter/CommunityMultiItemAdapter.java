@@ -1,11 +1,9 @@
 package com.lyd.yingdijava.UI.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import com.lyd.yingdijava.Utils.TextUtils;
 import java.util.HashMap;
 import java.util.List;
 
-// TODO: 2022/10/23 准备测试多布局 
 public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPostNode> {
 
     private static final int ROUTINE = 0;
@@ -35,7 +32,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
     private static final int DECK = 2;
     private static final int VOTE = 3;
 
-    public CommunityMultiItemAdapter(@NonNull List<? extends CommunityPostNode> items) {
+    public CommunityMultiItemAdapter(@NonNull List<? extends CommunityPostNode> items, CommunityClickListener clickListener) {
         super(items);
         OnMultiItemAdapterListener<CommunityPostNode,RoutineVH> listenerRoutine = new OnMultiItemAdapterListener<CommunityPostNode, RoutineVH>() {
             @NonNull
@@ -68,6 +65,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
 
                 if (communityPostNode.getPostImgList() != null && communityPostNode.getPostImgList().size() > 0){
                     int imgNum = communityPostNode.getPostImgList().size();
+                    if (imgNum > 3) imgNum = 3;
                     LinearLayout targetBar = (LinearLayout) imgsView.getChildAt(imgNum - 1);
                     for (int j = 0; j < targetBar.getChildCount(); j++) {
                         Glide.with(getContext())
@@ -75,6 +73,8 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                                 .placeholder(R.drawable.img_loading)
                                 .error(R.drawable.img_load_error)
                                 .into((ImageView) targetBar.getChildAt(j));
+                        final int finalJ = j;
+                        targetBar.getChildAt(j).setOnClickListener(view -> { clickListener.openPicture(i, finalJ); });
                     }
                 }
                 if (communityPostNode.getUser() != null){
@@ -369,5 +369,17 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
             footReply = itemView.findViewById(R.id.bar_item_foot_replyNum);
             footTime = itemView.findViewById(R.id.bar_item_foot_time);
         }
+    }
+
+    /**
+     * item的监听回调
+     * */
+    public interface CommunityClickListener {
+        /**
+         * 常规的帖子中的图片的点击事件
+         * @param itemPosition item的位置下标
+         * @param picturePosition 图片url在list中的位置
+         * */
+        void openPicture(final int itemPosition, final int picturePosition);
     }
 }

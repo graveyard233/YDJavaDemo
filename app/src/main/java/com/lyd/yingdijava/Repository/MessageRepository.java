@@ -25,6 +25,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Call;
@@ -223,9 +224,20 @@ public class MessageRepository {
                                     node.setText_preView(e.select("div.desc").first().text());
                                     List<String> tempImgList = new ArrayList<>();
                                     if (e.select("ul.imgs-area").size() > 0){
-                                        for (Element div :
-                                                e.select("div.img-item")) {
-                                            tempImgList.add(TextUtils.getImageUrlFromStyle(div.attr("style")));
+                                        if (e.selectFirst("ul.imgs-area").select("div.shade").size() > 0){
+                                            //如果有这个遮罩div，则代表这个帖子的图片超过3张，要去script中拿
+                                            StringBuffer sb = new StringBuffer(script.toString());
+                                            sb.delete(0,sb.indexOf("postsList"))
+                                                    .delete(0,sb.indexOf(node.getTitle()))
+                                                    .delete(0,sb.indexOf("imgs:"))
+                                                    .delete(0,6)
+                                                    .delete(sb.indexOf("\",cover:"),sb.length());
+                                            tempImgList.addAll(Arrays.asList(TextUtils.unicodeStr2String(sb.toString()).split("`")));
+                                        } else {
+                                            for (Element div :
+                                                    e.select("div.img-item")) {
+                                                tempImgList.add(TextUtils.getImageUrlFromStyle(div.attr("style")));
+                                            }
                                         }
                                         node.setPostImgList(tempImgList);
                                     }
@@ -294,7 +306,12 @@ public class MessageRepository {
                                     foot.setTime(e.selectFirst("div.info").getElementsByTag("span").get(4).text());
                                 }
                                 node.setFoot(foot);
-                                node.setUrl(e.selectFirst("a.block").attr("href"));
+
+                                if (node.getPostType().equals(BaseCommunityNode.PostType.ArticlePost)){//假如是文章类的帖子，就它需要特殊处理
+                                    node.setUrl(e.selectFirst("a.block").attr("href"));//这里有问题，如果是article，则这样是没问题的，否则需要换一个获取方法
+                                } else {
+                                    node.setUrl(e.selectFirst("div.feed-list-common").child(1).attr("href"));
+                                }
                                 nodeList.add(node);
                             } catch (Exception ex) {
                                 ex.printStackTrace();

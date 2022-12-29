@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bytedance.scene.group.UserVisibleHintGroupScene;
+import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.R;
@@ -106,7 +108,34 @@ public class CommunityFragment extends UserVisibleHintGroupScene {
 
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.community_recyclerView);
-        adapter = new CommunityMultiItemAdapter(new ArrayList<>());
+        adapter = new CommunityMultiItemAdapter(new ArrayList<>(), new CommunityMultiItemAdapter.CommunityClickListener() {
+            @Override
+            public void openPicture(int itemPosition, int picturePosition) {
+                ToastUtils.make().show(adapter.getItem(itemPosition).getPostImgList().get(picturePosition));
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("LIST", (ArrayList<String>) adapter.getItem(itemPosition).getPostImgList());
+                bundle.putInt("POSITION",picturePosition);
+                ImgGalleryFragment imgGalleryFragment = new ImgGalleryFragment();
+                imgGalleryFragment.setArguments(bundle);
+                NavigationSceneExtensionsKt.getNavigationScene(CommunityFragment.this)
+                        .push(imgGalleryFragment);
+            }
+        });
+        //注意，把需要被点击的组件设置一个id为item_post_toClick就可以统一设置点击事件
+        adapter.addOnItemChildClickListener(R.id.item_post_toClick, new BaseQuickAdapter.OnItemChildClickListener<CommunityPostNode>() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<CommunityPostNode, ?> baseQuickAdapter, @NonNull View view, int i) {
+                StringBuilder sb = new StringBuilder(baseQuickAdapter.getItem(i).getUrl());
+                sb.delete(0,3);
+                Bundle bundle = new Bundle();
+                bundle.putString("TITLE",baseQuickAdapter.getItem(i).getTitle());
+                bundle.putString("URL",sb.toString());
+                NewsWebFragment webFragment = new NewsWebFragment();
+                webFragment.setArguments(bundle);
+                NavigationSceneExtensionsKt.getNavigationScene(CommunityFragment.this)
+                        .push(webFragment);
+            }
+        });
         adapter.setEmptyViewEnable(true);
         adapter.setEmptyViewLayout(requireSceneContext(),R.layout.layout_load_error);
 
