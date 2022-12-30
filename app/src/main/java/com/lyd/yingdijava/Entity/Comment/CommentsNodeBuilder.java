@@ -1,5 +1,7 @@
 package com.lyd.yingdijava.Entity.Comment;
 
+import android.text.Html;
+
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
@@ -95,8 +97,8 @@ public class CommentsNodeBuilder {
     }
 
     private void buildMid(Element element,CommentItem item) {
-        item.getComment().setText(element.child(0).selectFirst("div.item-content-area").child(0)
-                .selectFirst("div.text-base").text());
+        item.getComment().setText(Html.fromHtml(element.child(0).selectFirst("div.item-content-area").child(0)
+                .selectFirst("div.text-base").html()).toString());
         if (element.child(0).selectFirst("div.item-content-area")
                 .select("div.item-content-imgs").size() != 0){//如果评论有图片的话
             List<String> tempList = new ArrayList<>();
@@ -168,15 +170,15 @@ public class CommentsNodeBuilder {
     }
 
     private void buildReply_itemMid(Element element,CommentItem item){
-        item.getComment().setText(element.selectFirst("div.child-content")
-                .selectFirst("p.text-base").text());
+        item.getComment().setText(Html.fromHtml(element.selectFirst("div.child-content")
+                .selectFirst("p.text-base").html()).toString());
         if (element.selectFirst("div.child-content")
                 .select("div.images-box").size() != 0){
             List<String> tempList = new ArrayList<>();
             for (Element e :
                     element.selectFirst("div.child-content")
                             .selectFirst("div.images-box")
-                            .select("div.img-item")) {
+                            .select("div.image-item")) {
                 StringBuffer sb = new StringBuffer(e.attr("style"));
                 sb.delete(0,sb.indexOf("http"));
                 sb.delete(sb.length() - 3,sb.length());

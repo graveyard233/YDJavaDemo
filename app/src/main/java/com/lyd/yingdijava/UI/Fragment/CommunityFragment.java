@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Adapter.CallBack.ItemClickListener;
 import com.lyd.yingdijava.UI.Adapter.CommunityMultiItemAdapter;
 import com.lyd.yingdijava.UI.Widget.SpacesItemDecoration;
 import com.lyd.yingdijava.ViewModel.MessageViewModel;
@@ -108,13 +109,13 @@ public class CommunityFragment extends UserVisibleHintGroupScene {
 
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.community_recyclerView);
-        adapter = new CommunityMultiItemAdapter(new ArrayList<>(), new CommunityMultiItemAdapter.CommunityClickListener() {
+        adapter = new CommunityMultiItemAdapter(new ArrayList<>(), new ItemClickListener() {
             @Override
-            public void openPicture(int itemPosition, int picturePosition) {
-                ToastUtils.make().show(adapter.getItem(itemPosition).getPostImgList().get(picturePosition));
+            public void onClickImage(int itemPosition, int imagePosition) {
+                ToastUtils.make().show(adapter.getItem(itemPosition).getPostImgList().get(imagePosition));
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("LIST", (ArrayList<String>) adapter.getItem(itemPosition).getPostImgList());
-                bundle.putInt("POSITION",picturePosition);
+                bundle.putInt("POSITION",imagePosition);
                 ImgGalleryFragment imgGalleryFragment = new ImgGalleryFragment();
                 imgGalleryFragment.setArguments(bundle);
                 NavigationSceneExtensionsKt.getNavigationScene(CommunityFragment.this)

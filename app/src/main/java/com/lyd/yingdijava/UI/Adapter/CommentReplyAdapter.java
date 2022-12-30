@@ -17,11 +17,13 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lyd.yingdijava.Entity.Comment.CommentItem;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Adapter.CallBack.ItemClickListener;
 
 import java.util.List;
 
 public class CommentReplyAdapter extends BaseQuickAdapter<CommentItem, CommentReplyAdapter.ReplyVH> {
 
+    private ItemClickListener itemClickListener;
 
     public CommentReplyAdapter(@NonNull List<? extends CommentItem> items) {
         super(items);
@@ -29,6 +31,10 @@ public class CommentReplyAdapter extends BaseQuickAdapter<CommentItem, CommentRe
 
     public CommentReplyAdapter() {
         super();
+    }
+
+    public void addReplyItemClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -60,6 +66,8 @@ public class CommentReplyAdapter extends BaseQuickAdapter<CommentItem, CommentRe
                         .placeholder(R.drawable.img_loading)
                         .error(R.drawable.img_load_error)
                         .into((ImageView) imgsView.getChildAt(j));
+                final int finalJ = j;
+                imgsView.getChildAt(j).setOnClickListener(view -> {itemClickListener.onClickImageForComments(i,finalJ,false,i);});
             }
         }
 

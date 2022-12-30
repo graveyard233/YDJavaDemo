@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.constant.RegexConstants;
+import com.blankj.utilcode.util.ClipboardUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lyd.yingdijava.Entity.Comment.CommentItem;
 import com.lyd.yingdijava.Entity.Comment.CommentsNode;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Adapter.CallBack.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +33,7 @@ public class CommentsMultiItemAdapter extends BaseMultiItemAdapter<CommentsNode<
     private static final int NOT_HOT = 1;
 
 
-    public CommentsMultiItemAdapter(@NonNull List<? extends CommentsNode<CommentItem>> items) {
+    public CommentsMultiItemAdapter(@NonNull List<? extends CommentsNode<CommentItem>> items, ItemClickListener clickListener) {
         super(items);
         OnMultiItemAdapterListener<CommentsNode<CommentItem>, CommentVH> listenerComment = new OnMultiItemAdapterListener<CommentsNode<CommentItem>, CommentVH>() {
             @NonNull
@@ -68,6 +72,8 @@ public class CommentsMultiItemAdapter extends BaseMultiItemAdapter<CommentsNode<
                                 .placeholder(R.drawable.img_loading)
                                 .error(R.drawable.img_load_error)
                                 .into((ImageView) imgsView.getChildAt(j));
+                        final int finalJ = j;
+                        imgsView.getChildAt(j).setOnClickListener(view -> { clickListener.onClickImageForComments(i, finalJ,true,0); });
                     }
                 }
                 //评论底部部分
@@ -84,14 +90,28 @@ public class CommentsMultiItemAdapter extends BaseMultiItemAdapter<CommentsNode<
                     commentVH.footReply.setText(commentItemCommentsNode.getMain_comment().getCommentInfo().getReplyNum());
                 }
 
-
+                CommentReplyAdapter adapter = new CommentReplyAdapter();
+                commentVH.replyRecycle.setAdapter(adapter);
                 if (commentItemCommentsNode.hasReply()){
                     commentVH.replyRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                    commentVH.replyRecycle.setAdapter(new CommentReplyAdapter(commentItemCommentsNode.getReply_comments()));
-                } else {
-                    CommentReplyAdapter adapter = new CommentReplyAdapter();
+                    adapter.addReplyItemClickListener(new ItemClickListener() {
+                        @Override
+                        public void onClickImageForComments(int itemPosition, int imagePosition, boolean isMainComment, int replyPosition) {
+                            clickListener.onClickImageForComments(i,imagePosition,false,replyPosition);//记得这里的itemPosition要变成i
+                        }
+                    });
+                    adapter.addOnItemChildLongClickListener(R.id.item_comment_reply_text, new OnItemChildLongClickListener<CommentItem>() {
+                        @Override
+                        public boolean onItemLongClick(@NonNull BaseQuickAdapter<CommentItem, ?> baseQuickAdapter, @NonNull View view, int i) {
+                            ClipboardUtils.copyText(baseQuickAdapter.getItem(i).getComment().getText());
+                            ToastUtils.make().show("已复制: " + ClipboardUtils.getText());
+                            return false;
+                        }
+                    });
                     commentVH.replyRecycle.setAdapter(adapter);
+                    adapter.submitList(commentItemCommentsNode.getReply_comments());
+                } else {
                     adapter.submitList(new ArrayList<>());
                 }
             }

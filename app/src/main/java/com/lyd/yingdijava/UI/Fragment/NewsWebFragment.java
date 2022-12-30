@@ -25,11 +25,13 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ClipboardUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bytedance.scene.Scene;
 import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
 import com.bytedance.scene.navigation.OnBackPressedListener;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.WebViewClient;
 import com.lyd.yingdijava.Entity.Comment.CommentItem;
@@ -39,6 +41,7 @@ import com.lyd.yingdijava.Entity.Comment.CommentsNodeBuilder;
 import com.lyd.yingdijava.Info.UrlInfo;
 import com.lyd.yingdijava.JsFile.MyJs;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Adapter.CallBack.ItemClickListener;
 import com.lyd.yingdijava.UI.Adapter.CommentsMultiItemAdapter;
 import com.lyd.yingdijava.UI.Widget.SpacesItemDecoration;
 
@@ -88,7 +91,23 @@ public class NewsWebFragment extends Scene {
         drawerLayout = findViewById(R.id.fragment_webView_drawerLayout);
 
         commentRecycle = findViewById(R.id.fragment_webView_comment_recycle);
-        adapter = new CommentsMultiItemAdapter(new ArrayList<>());
+        adapter = new CommentsMultiItemAdapter(new ArrayList<>(), new ItemClickListener(){
+            @Override
+            public void onClickImageForComments(int itemPosition, int imagePosition, boolean isMainComment, int replyPosition) {
+                super.onClickImageForComments(itemPosition, imagePosition, isMainComment, replyPosition);
+                Bundle bundle = new Bundle();
+                if (isMainComment){
+                    bundle.putStringArrayList("LIST", (ArrayList<String>) adapter.getItem(itemPosition).getMain_comment().getComment().getImg_url_list());
+                } else {
+                    bundle.putStringArrayList("LIST", (ArrayList<String>) adapter.getItem(itemPosition).getReply_comments().get(replyPosition).getComment().getImg_url_list());
+                }
+                bundle.putInt("POSITION",imagePosition);
+                ImgGalleryFragment imgGalleryFragment = new ImgGalleryFragment();
+                imgGalleryFragment.setArguments(bundle);
+                NavigationSceneExtensionsKt.getNavigationScene(NewsWebFragment.this)
+                        .push(imgGalleryFragment);
+            }
+        });
 
 
 
@@ -142,6 +161,15 @@ public class NewsWebFragment extends Scene {
         adapter.setEmptyViewEnable(true);
         adapter.setEmptyViewLayout(this.requireSceneContext(),R.layout.layout_load_error);
         commentRecycle.setLayoutManager(new LinearLayoutManager(requireSceneContext()));
+        // TODO: 2022/12/30 这里以后需要做一个判断，长按复制整个文本，或者是用户自己复制，这些交给用户选择，以后可以写在配置项中，目前先长按复制
+        adapter.addOnItemChildLongClickListener(R.id.item_comment_text, new BaseQuickAdapter.OnItemChildLongClickListener<CommentsNode<CommentItem>>() {
+            @Override
+            public boolean onItemLongClick(@NonNull BaseQuickAdapter<CommentsNode<CommentItem>, ?> baseQuickAdapter, @NonNull View view, int i) {
+                ClipboardUtils.copyText(baseQuickAdapter.getItem(i).getMain_comment().getComment().getText());
+                ToastUtils.make().show("已经复制: " + ClipboardUtils.getText());
+                return false;
+            }
+        });
         commentRecycle.setAdapter(adapter);
     }
 

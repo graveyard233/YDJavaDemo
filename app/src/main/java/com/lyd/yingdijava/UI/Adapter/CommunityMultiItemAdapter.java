@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.lyd.yingdijava.Entity.Community.CommunityPostNode;
 import com.lyd.yingdijava.Entity.Deck.HsDeckInfo;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Adapter.CallBack.ItemClickListener;
 import com.lyd.yingdijava.Utils.TextUtils;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
     private static final int DECK = 2;
     private static final int VOTE = 3;
 
-    public CommunityMultiItemAdapter(@NonNull List<? extends CommunityPostNode> items, CommunityClickListener clickListener) {
+    public CommunityMultiItemAdapter(@NonNull List<? extends CommunityPostNode> items, ItemClickListener clickListener) {
         super(items);
         OnMultiItemAdapterListener<CommunityPostNode,RoutineVH> listenerRoutine = new OnMultiItemAdapterListener<CommunityPostNode, RoutineVH>() {
             @NonNull
@@ -74,7 +75,7 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                                 .error(R.drawable.img_load_error)
                                 .into((ImageView) targetBar.getChildAt(j));
                         final int finalJ = j;
-                        targetBar.getChildAt(j).setOnClickListener(view -> { clickListener.openPicture(i, finalJ); });
+                        targetBar.getChildAt(j).setOnClickListener(view -> { clickListener.onClickImage(i, finalJ); });
                     }
                 }
                 if (communityPostNode.getUser() != null){
@@ -371,15 +372,4 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
         }
     }
 
-    /**
-     * item的监听回调
-     * */
-    public interface CommunityClickListener {
-        /**
-         * 常规的帖子中的图片的点击事件
-         * @param itemPosition item的位置下标
-         * @param picturePosition 图片url在list中的位置
-         * */
-        void openPicture(final int itemPosition, final int picturePosition);
-    }
 }
