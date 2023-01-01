@@ -121,8 +121,9 @@ public class CommentsMultiItemAdapter extends BaseMultiItemAdapter<CommentsNode<
         onItemViewType(new OnItemViewTypeListener<CommentsNode<CommentItem>>() {
             @Override
             public int onItemViewType(int i, @NonNull List<? extends CommentsNode<CommentItem>> list) {
+                // TODO: 2023/1/1 现在想到新品种的评论了，屏蔽功能，给item加个tag，是不是被屏蔽的用户，屏蔽列表写在数据库然后导入全局变量。以后加了功能再说
                 if (list.get(i).isHot)
-                    return NOT_HOT;// todo 为真，证明这个评论是热评，但这并不重要，重要的是以后还有新品种的评论时能够区分
+                    return NOT_HOT;
                 else
                     return NOT_HOT;//为假，这个不是热评
             }

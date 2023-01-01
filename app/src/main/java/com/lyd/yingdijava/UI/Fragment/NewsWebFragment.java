@@ -174,6 +174,7 @@ public class NewsWebFragment extends Scene {
     }
 
     private void setWebView(String url){
+        Log.d("Web", "setWebView: " + url);
         webView = AgentWeb.with(requireActivity())
                 .setAgentWebParent(linear,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator()

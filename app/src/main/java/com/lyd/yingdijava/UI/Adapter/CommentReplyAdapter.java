@@ -46,11 +46,12 @@ public class CommentReplyAdapter extends BaseQuickAdapter<CommentItem, CommentRe
             replyVH.userName.setText(commentItem.getCommentUser().getName());
         }
         replyVH.userLevel.setText(commentItem.getCommentUser().getLevel());
-        Glide.with(getContext())
-                .load(commentItem.getCommentUser().getPortrait_url())
-                .placeholder(R.drawable.img_loading)
-                .error(R.drawable.img_load_error)
-                .into(replyVH.userImg);
+        // todo 评论先暂时不主动加载头像，以后在配置项中添加
+//        Glide.with(getContext())
+//                .load(commentItem.getCommentUser().getPortrait_url())
+//                .placeholder(R.drawable.img_loading)
+//                .error(R.drawable.img_load_error)
+//                .into(replyVH.userImg);
 
         replyVH.comment.setText(commentItem.getComment().getText());
         if (replyVH.imgBarContainer.getChildCount() > 0){

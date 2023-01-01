@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:ellipsize="start"
             android:gravity="center"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="@dimen/bar_foot_min"

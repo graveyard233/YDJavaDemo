@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bytedance.scene.group.UserVisibleHintGroupScene;
 import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -30,6 +29,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +157,18 @@ public class NewsFragment extends UserVisibleHintGroupScene {
 //                }
                 banner.setAdapter(new NewsBannerAdapter(bannerNodes),true)
                         .addBannerLifecycleObserver(getUserVisibleHintLifecycleOwner())
+                        .setOnBannerListener(new OnBannerListener<BannerNode>() {
+                            @Override
+                            public void OnBannerClick(BannerNode data, int position) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("TITLE",data.getTitle());
+                                bundle.putString("URL",data.getUrl().replace("https://www.iyingdi.com/tz",""));//这里要剔除前面的东西
+                                NewsWebFragment webFragment = new NewsWebFragment();
+                                webFragment.setArguments(bundle);
+                                NavigationSceneExtensionsKt.getNavigationScene(NewsFragment.this)
+                                        .push(webFragment);
+                            }
+                        })
                         .setIndicator(new CircleIndicator(getSceneContext()))
                         .setLoopTime(10000);
             }

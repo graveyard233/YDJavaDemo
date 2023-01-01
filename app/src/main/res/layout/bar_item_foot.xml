@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:ellipsize="start"
             android:textSize="@dimen/bar_foot_text"
             tools:text="11月24日"
             />

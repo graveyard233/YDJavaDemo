@@ -112,7 +112,6 @@ public class CommunityFragment extends UserVisibleHintGroupScene {
         adapter = new CommunityMultiItemAdapter(new ArrayList<>(), new ItemClickListener() {
             @Override
             public void onClickImage(int itemPosition, int imagePosition) {
-                ToastUtils.make().show(adapter.getItem(itemPosition).getPostImgList().get(imagePosition));
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("LIST", (ArrayList<String>) adapter.getItem(itemPosition).getPostImgList());
                 bundle.putInt("POSITION",imagePosition);
