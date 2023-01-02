@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="工具">
+
+        <menu>
+
+            <item android:title="炉石单卡查询"
+                android:id="@+id/menu_search_hearthstone"
+                android:icon="@drawable/ic_hearthstone_card_logo"/>
+
+            <item android:title="套牌广场"
+                android:id="@+id/menu_desks"/>
+
+            <item android:title="万智牌单卡查询"
+                android:id="@+id/menu_search_mtg"
+                android:icon="@drawable/ic_mtg_card_loge"/>
+
+        </menu>
+
+    </item>
+
+
+
+</menu>

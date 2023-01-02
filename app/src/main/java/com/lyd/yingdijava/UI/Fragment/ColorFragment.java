@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ColorUtils;
 import com.bytedance.scene.Scene;
 import com.bytedance.scene.group.UserVisibleHintGroupScene;
 import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
-import com.lyd.yingdijava.R;
 
 public class ColorFragment extends UserVisibleHintGroupScene {
     private Integer mId;
@@ -33,7 +33,7 @@ public class ColorFragment extends UserVisibleHintGroupScene {
         });
         FrameLayout frameLayout = new FrameLayout(requireSceneContext());
         frameLayout.setId(mId);
-        frameLayout.setBackgroundColor(getResources().getColor(R.color.blue_grey_300));
+        frameLayout.setBackgroundColor(ColorUtils.getRandomColor());
         frameLayout.addView(textView);
         return frameLayout;
     }
@@ -45,7 +45,7 @@ public class ColorFragment extends UserVisibleHintGroupScene {
         public View onCreateView(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup, @Nullable Bundle bundle) {
             View view = new View(getActivity());
 
-            view.setBackgroundColor(getResources().getColor(R.color.light_blue_300));
+            view.setBackgroundColor(ColorUtils.getRandomColor());
             return view;
         }
     }

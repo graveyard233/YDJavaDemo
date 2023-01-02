@@ -33,7 +33,7 @@ public class MainScene extends MainNavScene {
 
     @Override
     protected int getRightMenuResId() {
-        return R.menu.bottom_navigation;
+        return R.menu.main_tools_menu;
     }
 
     private Bundle getBundle(int index){

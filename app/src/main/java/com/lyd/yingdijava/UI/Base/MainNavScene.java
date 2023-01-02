@@ -15,12 +15,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bytedance.scene.Scene;
+import com.bytedance.scene.animation.animatorexecutor.HorizontalTransitionAnimatorExecutor;
 import com.bytedance.scene.group.GroupScene;
+import com.bytedance.scene.interfaces.PushOptions;
+import com.bytedance.scene.ktx.NavigationSceneExtensionsKt;
 import com.bytedance.scene.navigation.NavigationSceneGetter;
+import com.bytedance.scene.navigation.NavigationSceneOptions;
 import com.bytedance.scene.navigation.OnBackPressedListener;
 import com.bytedance.scene.ui.GroupSceneUIUtility;
 import com.google.android.material.navigation.NavigationView;
 import com.lyd.yingdijava.R;
+import com.lyd.yingdijava.UI.Activity.MainScene;
+import com.lyd.yingdijava.UI.Fragment.CardSearchFragment;
+import com.lyd.yingdijava.UI.Fragment.ColorFragment;
 
 import java.util.LinkedHashMap;
 
@@ -81,6 +88,24 @@ public abstract class MainNavScene extends GroupScene {
                 if (mDrawerLayout.isDrawerOpen(mNaviLeft)) {
                     mDrawerLayout.closeDrawer(mNaviLeft);
                     return true;
+                }
+                return false;
+            }
+        });
+        this.mNaviRight.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_search_hearthstone:
+                        NavigationSceneExtensionsKt.requireNavigationScene(MainNavScene.this)
+                                .push(CardSearchFragment.class, (new NavigationSceneOptions(MainScene.class, null)).toBundle(),
+                                        (new PushOptions.Builder()).setAnimation((new HorizontalTransitionAnimatorExecutor())).build());
+                        break;
+                    default:
+                        NavigationSceneExtensionsKt.requireNavigationScene(MainNavScene.this)
+                                .push(ColorFragment.class, (new NavigationSceneOptions(MainScene.class, null)).toBundle(),
+                                        (new PushOptions.Builder()).setAnimation((new HorizontalTransitionAnimatorExecutor())).build());
+                        break;
                 }
                 return false;
             }

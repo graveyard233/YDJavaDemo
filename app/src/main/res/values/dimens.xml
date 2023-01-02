@@ -9,4 +9,7 @@
     <dimen name="comments_bar_title">25sp</dimen>
     <dimen name="bar_foot_min">5sp</dimen>
     <dimen name="bar_foot_text_bigger">15sp</dimen>
+
+    <dimen name="bar_hearthstone_profession">5dp</dimen>
+    <dimen name="bar_hearthstone_mana">3dp</dimen>
 </resources>
