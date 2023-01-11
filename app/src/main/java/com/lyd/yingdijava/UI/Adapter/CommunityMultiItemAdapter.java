@@ -163,7 +163,12 @@ public class CommunityMultiItemAdapter extends BaseMultiItemAdapter<CommunityPos
                     return;
                 switch (communityPostNode.getDeckTag()){
                     case "炉石":
-                        HsDeckInfo deckInfo = new Gson().fromJson(communityPostNode.getDeckInfo(),HsDeckInfo.class);
+                        HsDeckInfo deckInfo;
+                        try{
+                            deckInfo = new Gson().fromJson(communityPostNode.getDeckInfo(),HsDeckInfo.class);
+                        } catch (Exception e){
+                            return;
+                        }
                         View deckView = null;/*(View) LayoutInflater.from(getContext()).inflate(R.layout.item_deck_preview,null,false);*/
 
                         if (deckHsVH.postLinear.getChildCount() == 4){//代表这个卡组view已经加载了，直接更新最后一个

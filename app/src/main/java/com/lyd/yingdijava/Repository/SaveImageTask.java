@@ -8,20 +8,20 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.bytedance.scene.group.GroupScene;
 import com.lyd.yingdijava.Utils.BaseSubscriber;
 
 import org.reactivestreams.Subscription;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -45,12 +45,12 @@ public class SaveImageTask {
 
         String url;
 
-        InputStream inputStream;
+        BufferedInputStream bufferedInputStream;
 
-        public DownloadResult(String suffix, String url, InputStream inputStream) {
+        public DownloadResult(String suffix, String url, BufferedInputStream inputStream) {
             this.suffix = suffix;
             this.url = url;
-            this.inputStream = inputStream;
+            this.bufferedInputStream = inputStream;
         }
     }
 
@@ -61,15 +61,22 @@ public class SaveImageTask {
         Observable.fromArray(urls)
                 .observeOn(Schedulers.io())
                 .map(url ->{
-                    File file = Glide.with(mContext)
-                            .load(url)
-                            .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .get();
+                    URL urL = new URL(url);
+                    HttpURLConnection connection = (HttpURLConnection) urL.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
+//                    File file = Glide.with(mContext)
+//                            .load(url)
+//                            .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+//                            .get();
                     if (url.contains(".gif")){
                         Log.i("TAG", "toDownload: 这张图是gif图，要切换下载后缀");
-                        return new DownloadResult("image/gif",url,(InputStream) new ByteArrayInputStream(File2byte(file)));
+//                        return new DownloadResult("image/gif",url,(InputStream) new ByteArrayInputStream(File2byte(file)));
+                        return new DownloadResult("image/gif",url,bufferedInputStream);
                     } else {
-                        return new DownloadResult("image/jpeg",url,(InputStream) new ByteArrayInputStream(File2byte(file)));
+//                        return new DownloadResult("image/jpeg",url,(InputStream) new ByteArrayInputStream(File2byte(file)));
+                        return new DownloadResult("image/jpeg",url,bufferedInputStream);
                     }
                 })
                 .map(downloadResult ->{
@@ -83,16 +90,17 @@ public class SaveImageTask {
                     values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());//加入时间？
                     Uri imgUri = mContext.getContentResolver().insert(tableUri,values);
                     OutputStream os = mContext.getContentResolver().openOutputStream(imgUri);
+                    BufferedOutputStream bos = new BufferedOutputStream(os,8192 * 3);
 
 
-                    byte[] bytes = new byte[1024* 4];
+                    byte[] bytes = new byte[1024 * 2];
                     int len = 0;
-                    while (((len = downloadResult.inputStream.read(bytes)) != -1)){
-                        os.write(bytes,0,len);
+                    while (((len = downloadResult.bufferedInputStream.read(bytes)) != -1)){
+                        bos.write(bytes,0,len);
                     }
-                    os.flush();
-                    os.close();
-                    downloadResult.inputStream.close();
+                    bos.flush();
+                    bos.close();
+                    downloadResult.bufferedInputStream.close();
 //                    try {
 //
 //                    } catch (IOException e) {
