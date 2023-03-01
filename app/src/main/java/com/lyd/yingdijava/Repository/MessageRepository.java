@@ -43,6 +43,8 @@ public class MessageRepository {
 
     private OkHttpClient okHttpClient;
 
+    private int witchScript = 6;
+
     private MessageRepository(){
         okHttpClient = new OkHttpClient();
     }
@@ -143,7 +145,7 @@ public class MessageRepository {
                             return;
                         }
                         Document doc = Jsoup.parse(tempBanner);
-                        Element script = doc.select("script").get(5);
+                        Element script = doc.select("script").get(witchScript);
                         StringBuffer stringBuffer = new StringBuffer(script.toString());
 
                         stringBuffer.delete(0,stringBuffer.indexOf("top_content"))
@@ -205,7 +207,7 @@ public class MessageRepository {
                             return;
                         }
                         Document doc = Jsoup.parse(tempPostList);
-                        Element script = doc.select("script").get(5);
+                        Element script = doc.select("script").get(witchScript);
                         Elements postList_html = doc.select("div.post-list-component").first().children();
 
                         List<CommunityPostNode> nodeList = new ArrayList<>();
