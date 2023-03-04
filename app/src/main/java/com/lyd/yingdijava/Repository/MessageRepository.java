@@ -43,7 +43,7 @@ public class MessageRepository {
 
     private OkHttpClient okHttpClient;
 
-    private int witchScript = 6;
+    private int witchScript = 0;
 
     private MessageRepository(){
         okHttpClient = new OkHttpClient();
@@ -145,6 +145,18 @@ public class MessageRepository {
                             return;
                         }
                         Document doc = Jsoup.parse(tempBanner);
+
+                        if (witchScript == 0){// 假如没有初始化，则获取一次数据index，之后就不需要了
+                            for (int i = 0; i < doc.select("script").size(); i++) {
+                                if (doc.select("script").get(i).toString().length() > 1000){
+//                                    Log.i(TAG, "onResponse:" + i + "->" + doc.select("script").get(i).toString().length());
+                                    witchScript = i;
+                                    break;
+                                }
+                            }
+                        }
+
+
                         Element script = doc.select("script").get(witchScript);
                         StringBuffer stringBuffer = new StringBuffer(script.toString());
 
@@ -207,7 +219,23 @@ public class MessageRepository {
                             return;
                         }
                         Document doc = Jsoup.parse(tempPostList);
+
+                        if (witchScript == 0){// 假如没有初始化，则获取一次数据index，之后就不需要了
+                            for (int i = 0; i < doc.select("script").size(); i++) {
+                                if (doc.select("script").get(i).toString().length() > 1000){
+//                                    Log.i(TAG, "onResponse:" + i + "->" + doc.select("script").get(i).toString().length());
+                                    witchScript = i;
+                                    break;
+                                }
+                            }
+                        }
+
+
                         Element script = doc.select("script").get(witchScript);
+//                        for (Element node :
+//                                doc.select("script")) {
+//
+//                        }
                         Elements postList_html = doc.select("div.post-list-component").first().children();
 
                         List<CommunityPostNode> nodeList = new ArrayList<>();
