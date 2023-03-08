@@ -9,7 +9,7 @@
 
 [![20230125-140635.gif](https://i.postimg.cc/q7CMbPwY/20230125-140635.gif)](https://postimg.cc/xkn2qFWy) <--图床有大小限制，点进去能看更大的
 
-## [APP下载体验](https://github.com/graveyard233/YDJavaDemo/releases/tag/v1.0.0)
+## [APP下载体验](https://github.com/graveyard233/YDJavaDemo/releases)
 仅申请网络权限，UI丑我认了，尽量在WiFi环境下使用，不缺流量的话无所谓
 
 以下是罗里吧嗦的开发感言
